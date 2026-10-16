@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tergel Khereid Herbarium</title>
+<meta name="description" content="Tergel Khereid, Ph.D. candidate in Biotechnology and Food Chemistry at Kitami Institute of Technology.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=Courier+Prime:wght@400;700&family=Noto+Sans+Mongolian&display=swap">
+<style>
+/* Layout: a herbarium cabinet. Each section is a mounted sheet; labels are typed specimen tags. */
+:root{
+  --paper:#e9ede3; --sheet:#f8f9f3; --ink:#1e2a21; --ink-soft:#56634f; --rule:#c6cdbb;
+  --rose:#a8324c; --rose-wash:#e5a3b1; --leaf:#4e6a3b; --leaf-wash:#a9c091; --label:#fdfcf6; --tape:rgba(214,206,170,.7);
+  --f-display:"IM Fell English", "Iowan Old Style", Georgia, serif;
+  --f-body:"Karla", "Segoe UI", system-ui, sans-serif;
+  --f-label:"Courier Prime", "Courier New", ui-monospace, monospace;
+  --shadow:0 1px 0 rgba(30,42,33,.05), 0 10px 30px -18px rgba(30,42,33,.45);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#111813; --sheet:#18211b; --ink:#e4e9db; --ink-soft:#9eab95; --rule:#2f3b31;
+  --rose:#ea8199; --rose-wash:#7d3446; --leaf:#9cbf82; --leaf-wash:#3d5530; --label:#1e2921; --tape:rgba(120,116,90,.45);
+  --shadow:0 1px 0 rgba(0,0,0,.2), 0 14px 34px -18px rgba(0,0,0,.8); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --paper:#111813; --sheet:#18211b; --ink:#e4e9db; --ink-soft:#9eab95; --rule:#2f3b31;
+  --rose:#ea8199; --rose-wash:#7d3446; --leaf:#9cbf82; --leaf-wash:#3d5530; --label:#1e2921; --tape:rgba(120,116,90,.45);
+  --shadow:0 1px 0 rgba(0,0,0,.2), 0 14px 34px -18px rgba(0,0,0,.8); color-scheme:dark; }
+
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.65 var(--f-body);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--leaf-wash) 18%, transparent), transparent 40%),
+                   radial-gradient(circle at 90% 60%, color-mix(in srgb, var(--rose-wash) 14%, transparent), transparent 45%);}
+a{color:var(--rose);text-underline-offset:3px}
+a:hover{color:var(--ink)}
+:focus-visible{outline:2px dashed var(--rose);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+.todo{outline:1.5px dashed var(--rose);outline-offset:2px;border-radius:3px;color:var(--rose);background:color-mix(in srgb, var(--rose-wash) 20%, transparent)}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0}
+.lbl{font-family:var(--f-label);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px;flex-wrap:wrap}
+.mono{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:1.15rem;text-decoration:none;color:var(--ink)}
+.mono b{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--ink);border-radius:50%;font-weight:400;font-style:italic}
+.top nav{display:flex;gap:4px 18px;flex-wrap:wrap}
+.top nav a{font-family:var(--f-label);font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;padding:4px 0;border-bottom:1px solid transparent}
+.top nav a:hover{color:var(--ink);border-bottom-color:var(--rose)}
+
+/* ---------- hero sheet ---------- */
+.hero{position:relative;overflow-x:clip;background:var(--sheet);box-shadow:var(--shadow);border:1px solid var(--rule);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(16px,4vw,56px);padding:clamp(20px,4vw,52px);margin-top:8px}
+.hero::before,.hero::after{content:"";position:absolute;width:90px;height:26px;background:var(--tape);top:-12px}
+.hero::before{left:38px;transform:rotate(-4deg)}.hero::after{right:48px;transform:rotate(3deg)}
+.art{position:relative;min-width:0}
+.art svg{display:block;width:100%;height:auto;max-height:620px}
+.art figcaption{font-family:var(--f-display);font-style:italic;color:var(--ink-soft);font-size:.95rem;margin-top:6px;line-height:1.4}
+.loupe{position:absolute;left:0;top:0;width:180px;height:180px;will-change:transform;border-radius:50%;overflow:hidden;pointer-events:none;border:2px solid var(--ink);background:var(--sheet);box-shadow:0 10px 30px -8px rgba(0,0,0,.45), inset 0 0 0 6px color-mix(in srgb,var(--sheet) 60%, transparent);opacity:0;transition:opacity .2s;z-index:3}
+.loupe.on{opacity:1}
+.loupe canvas{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:50%}
+.loupe::before{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 22px rgba(0,0,0,.28);z-index:1}
+.lens-cap{position:absolute;left:0;top:0;pointer-events:none;z-index:4;font-family:var(--f-label);font-size:.72rem;letter-spacing:.04em;line-height:1.35;white-space:nowrap;max-width:calc(100vw - 24px);box-sizing:border-box;background:var(--label);color:var(--ink);border:1px solid var(--ink);padding:4px 8px;box-shadow:2px 2px 0 var(--rule);opacity:0;transition:opacity .2s}
+.lens-cap.on{opacity:1}
+@media (max-width:520px){.lens-cap{white-space:normal;width:max-content;text-align:center}}
+.lens-cap b{color:var(--rose);font-weight:700}
+.art .hint{display:block;margin-top:8px;font-family:var(--f-label);font-style:normal;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--rose)}
+.draw .hit{fill:none;stroke:transparent;stroke-width:16px;stroke-linecap:round;vector-effect:none;pointer-events:stroke;stroke-dasharray:none;animation:none}
+.draw .hit.thin{stroke-width:9px}
+.draw .hit.wide{stroke-width:22px}
+.lens-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:40}
+.draw .hitf{fill:transparent;stroke:none;pointer-events:fill}
+.loupe::after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--ink);opacity:.55;z-index:2}
+.art.zoom svg{cursor:none}
+.hero-text{display:flex;flex-direction:column;gap:18px;justify-content:center;min-width:0}
+.hero h1{font-size:clamp(3rem,8.5vw,6.4rem);line-height:.9;letter-spacing:-.01em}
+.hero h1 em{display:block;color:var(--rose);padding-left:.6em}
+.native{font-size:1.4rem;color:var(--ink-soft)}
+.role{font-size:1.1rem;font-weight:500}
+.role span{display:block;color:var(--ink-soft);font-weight:400}
+.intro{font-family:var(--f-display);font-style:italic;font-size:clamp(1.3rem,2.4vw,1.7rem);line-height:1.35;max-width:30ch}
+
+/* specimen label */
+.tag{background:var(--label);border:1px solid var(--ink);padding:14px 16px 12px;font-family:var(--f-label);font-size:.86rem;line-height:1.55;max-width:460px;box-shadow:3px 3px 0 var(--rule);position:relative}
+.tag .hd{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.76rem}
+.tag dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0}
+.tag dt{color:var(--ink-soft)}
+.tag dt::after{content:" ...."; color:var(--rule)}
+.tag dd{margin:0;min-width:0}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-label);font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;padding:10px 16px;border:1px solid var(--ink);color:var(--ink);background:transparent;text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--ink);color:var(--sheet)}
+
+/* ---------- sections ---------- */
+section{padding-block:clamp(56px,9vw,104px) 0}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:28px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(2rem,4.6vw,3.2rem);line-height:1}
+.sec-head .lbl{flex:1;min-width:160px;border-bottom:1px solid var(--rule);padding-bottom:6px}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:start}
+.mount{position:relative;background:var(--sheet);padding:14px 14px 40px;box-shadow:var(--shadow);transform:rotate(-2deg);max-width:300px}
+.mount img,.mount .ph{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;max-width:100%}
+.mount i{position:absolute;width:26px;height:26px;border:solid var(--ink);opacity:.8}
+.mount i:nth-of-type(1){top:6px;left:6px;border-width:2px 0 0 2px}.mount i:nth-of-type(2){top:6px;right:6px;border-width:2px 2px 0 0}
+.mount i:nth-of-type(3){bottom:32px;left:6px;border-width:0 0 2px 2px}.mount i:nth-of-type(4){bottom:32px;right:6px;border-width:0 2px 2px 0}
+.mount figcaption{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:var(--f-display);font-style:italic;color:var(--ink-soft)}
+.ph{display:grid;place-items:center;background:repeating-linear-gradient(135deg, color-mix(in srgb,var(--leaf-wash) 35%, transparent) 0 10px, transparent 10px 20px), var(--paper);border:1.5px dashed var(--leaf);color:var(--leaf);font-family:var(--f-label);font-size:.85rem;text-align:center;padding:12px}
+.prose{max-width:62ch;display:flex;flex-direction:column;gap:1em;font-size:1.08rem}
+.prose p{margin:0}
+.prose p:first-child::first-letter{font-family:var(--f-display);float:left;font-size:4.2rem;line-height:.8;padding:6px 10px 0 0;color:var(--rose)}
+.methods{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;padding:0;list-style:none}
+.methods li{font-family:var(--f-label);font-size:.8rem;padding:4px 10px;border:1px solid var(--rule);background:var(--sheet)}
+
+/* research sheets */
+.sheets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(18px,3vw,32px)}
+.sheet{background:var(--sheet);border:1px solid var(--rule);box-shadow:var(--shadow);padding:20px 20px 18px;display:flex;flex-direction:column;gap:12px;position:relative;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.sheet:hover{transform:translateY(-4px) rotate(-.6deg)}
+.sheet:nth-child(2):hover{transform:translateY(-4px) rotate(.6deg)}
+.sheet svg{width:100%;height:150px;display:block}
+.sheet h3{font-size:1.5rem;line-height:1.15}
+.sheet p{margin:0;color:var(--ink-soft)}
+.sheet .tag{font-size:.74rem;padding:8px 10px;align-self:flex-end;margin-top:auto;box-shadow:2px 2px 0 var(--rule)}
+
+/* publications */
+.acc{border-top:1px solid var(--ink)}
+.acc details{border-bottom:1px solid var(--rule)}
+.acc summary{list-style:none;display:grid;grid-template-columns:5.5rem minmax(0,1fr) auto;gap:16px;align-items:start;padding:18px 4px;cursor:pointer}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary:hover .t{color:var(--rose)}
+.acc .yr{font-family:var(--f-label);font-size:.85rem;color:var(--ink-soft);padding-top:5px}
+.acc .t{font-family:var(--f-display);font-size:1.28rem;line-height:1.3;transition:color .2s}
+.acc .o{display:block;font-family:var(--f-body);font-size:.95rem;color:var(--ink-soft);margin-top:2px}
+.acc .j{display:block;font-family:var(--f-body);font-style:italic;font-size:.95rem;color:var(--ink-soft);margin-top:4px}
+.acc .pm{font-family:var(--f-label);width:30px;height:30px;border:1px solid var(--rule);display:grid;place-items:center;border-radius:50%;transition:transform .3s}
+.acc details[open] .pm{transform:rotate(45deg);border-color:var(--rose);color:var(--rose)}
+.acc .sum{padding:0 4px 22px calc(5.5rem + 20px);max-width:calc(62ch + 5.5rem);color:var(--ink-soft);display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.acc .sum p{margin:0}
+
+/* patent */
+.patent{margin-top:36px;background:var(--sheet);border:1px solid var(--rule);box-shadow:var(--shadow);padding:clamp(20px,4vw,36px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;position:relative;overflow:hidden}
+.patent h3{font-size:1.6rem;line-height:1.2}
+.patent p{margin:8px 0 0;color:var(--ink-soft);max-width:60ch}
+.stamp{font-family:var(--f-label);font-weight:700;color:var(--rose);border:3px double var(--rose);padding:10px 14px;text-align:center;transform:rotate(-8deg);letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;line-height:1.4;opacity:.85;mix-blend-mode:multiply}
+:root[data-theme="dark"] .stamp{mix-blend-mode:normal}
+@media (prefers-color-scheme: dark){ .stamp{mix-blend-mode:normal} }
+
+/* path: vine timelines */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(24px,5vw,64px)}
+.paths h3{font-size:1.6rem;margin-bottom:14px}
+.vine{list-style:none;margin:0;padding:0 0 0 34px;position:relative}
+.vine::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--leaf);border-radius:2px}
+.vine li{position:relative;padding-bottom:26px}
+.vine li svg{position:absolute;left:-34px;top:2px;width:26px;height:26px}
+.vine .d{font-family:var(--f-label);font-size:.78rem;color:var(--ink-soft);letter-spacing:.04em}
+.vine .r{font-weight:700;font-size:1.06rem;line-height:1.35}
+.vine .p{color:var(--ink-soft)}
+.vine .x{margin:4px 0 0;font-size:.95rem}
+
+/* awards + languages */
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(24px,5vw,64px)}
+.ribbons{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.ribbons li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:center;background:var(--sheet);border:1px solid var(--rule);padding:12px 16px}
+.ribbons .t{font-family:var(--f-display);font-size:1.2rem;line-height:1.25}
+.ribbons .i{color:var(--ink-soft);font-size:.9rem}
+.langs{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.lang{background:var(--sheet);border:1px solid var(--rule);padding:12px 16px 12px 12px;display:grid;grid-template-columns:88px minmax(0,1fr);gap:16px;align-items:center;min-width:0;min-height:100px}
+.lang .n{width:88px;height:88px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--rule);color:var(--rose);line-height:1;white-space:nowrap;overflow:hidden}
+.lang .n i{font-style:normal;font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif CJK SC",var(--f-display);font-size:1.5rem}
+.lang .n i.lat{font-family:var(--f-display);font-style:italic;font-size:1.3rem}
+.lang .n i.v{font-family:"Noto Sans Mongolian","Mongolian Baiti",serif;writing-mode:vertical-lr;font-size:1.2rem;line-height:1}
+.lang b{display:block;line-height:1.3}
+.lang .lv{color:var(--ink-soft);font-size:.9rem;display:block;line-height:1.35}
+.lang small{font-family:var(--f-label);font-size:.74rem;color:var(--ink-soft);display:block;margin-top:4px}
+
+/* contact */
+.closing{margin-top:clamp(56px,9vw,104px);background:var(--ink);color:var(--sheet);padding-block:clamp(48px,8vw,90px);position:relative;overflow:hidden}
+.closing h2{font-size:clamp(2.6rem,7vw,5rem);line-height:.95}
+.closing h2 em{color:var(--rose-wash)}
+.closing p{max-width:50ch;opacity:.85;font-size:1.1rem}
+.closing .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+.closing .mail{font-family:var(--f-label);font-size:1.05rem;padding:10px 14px;border:1px dashed color-mix(in srgb,var(--sheet) 50%, transparent);user-select:all;word-break:break-all}
+.closing .btn{border-color:var(--sheet);color:var(--sheet)}
+.closing .btn:hover{background:var(--sheet);color:var(--ink)}
+.closing .todo{color:var(--rose-wash);outline-color:var(--rose-wash)}
+.closing svg.bg{position:absolute;right:-40px;bottom:-30px;width:min(420px,60vw);height:auto;opacity:.18;pointer-events:none}
+.closing .inner{position:relative}
+footer{font-family:var(--f-label);font-size:.75rem;color:var(--ink-soft);padding-block:22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* drawing */
+.draw path,.draw line,.draw circle,.draw ellipse{fill:none;stroke:var(--ink);stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.draw .wash-leaf{fill:var(--leaf-wash);stroke:none;opacity:.55}
+.draw .wash-rose{fill:var(--rose-wash);stroke:none;opacity:.75}
+.draw .wash-hip{fill:var(--rose);stroke:none;opacity:.55}
+.draw .anther{fill:var(--ink);stroke:none}
+.draw.animate .ln{stroke-dasharray:1;stroke-dashoffset:1;animation:ink 1.4s cubic-bezier(.6,.1,.3,1) forwards}
+.draw.animate .wash-leaf,.draw.animate .wash-rose,.draw.animate .wash-hip,.draw.animate .anther{opacity:0;animation:wash 1.2s ease forwards}
+@keyframes ink{to{stroke-dashoffset:0}}
+@keyframes wash{to{opacity:var(--o,.6)}}
+.draw .sway{transform-box:fill-box;transform-origin:0% 50%;transition:transform .8s cubic-bezier(.3,1.6,.4,1)}
+.art:hover .draw .sway{transform:rotate(-3deg)}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .art svg{max-height:420px;margin:0 auto}
+  .about{grid-template-columns:1fr}
+  .mount{margin:0 auto}
+  .acc summary{grid-template-columns:minmax(0,1fr) auto}
+  .acc .yr{grid-column:1/-1;padding-top:0;order:-1}
+  .acc .sum{padding-left:4px}
+  .patent{grid-template-columns:1fr}
+  .stamp{justify-self:start}
+  .langs{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .draw.animate .ln,.draw.animate .wash-leaf,.draw.animate .wash-rose,.draw.animate .wash-hip,.draw.animate .anther{animation:none;stroke-dashoffset:0;opacity:var(--o,.6)}
+  .sheet,.draw .sway{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mono" href="#top" id="mono"><b id="initials">T</b><span id="shortname"></span></a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a><a href="#research">Research</a><a href="#publications">Publications</a><a href="#path">Path</a><a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <figure class="art" id="art" style="margin:0">
+        <svg class="draw animate" id="rose" viewBox="0 0 400 560" role="img" aria-label="Botanical line drawing of a Rosa rugosa stem with a flower and a rose hip"></svg>
+        <figcaption>Rosa rugosa Thunb., <em>hamanasu</em>. The prefectural flower of Hokkaido, and a cousin of the roses in her α-glucosidase study.<span class="hint" id="lensHint" hidden></span></figcaption>
+      </figure>
+      <div class="hero-text">
+        <h1 id="name"></h1>
+        <div class="native" id="native"></div>
+        <div class="role" id="role"></div>
+        <p class="intro" id="intro"></p>
+        <div class="tag" id="spec">
+          <div class="hd"><span>Herbarium sheet</span><span id="specno"></span></div>
+          <dl id="specdl"></dl>
+        </div>
+        <div id="cv"></div>
+      </div>
+    </div>
+
+    <section id="about">
+      <div class="sec-head"><h2>About</h2><span class="lbl">Field notes</span></div>
+      <div class="about">
+        <figure class="mount" style="margin:0" id="photo"></figure>
+        <div>
+          <div class="prose" id="aboutText"></div>
+          <div class="lbl" style="margin-top:28px">Methods at the bench</div>
+          <ul class="methods" id="skills"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="sec-head"><h2>Research</h2><span class="lbl">Three collections</span></div>
+      <div class="sheets" id="sheets"></div>
+    </section>
+
+    <section id="publications">
+      <div class="sec-head"><h2>Publications</h2><span class="lbl" id="pubcount">Accessions</span></div>
+      <div class="acc" id="pubs"></div>
+      <div id="patents"></div>
+    </section>
+
+    <section id="path">
+      <div class="sec-head"><h2>Path</h2><span class="lbl">From Hohhot to Hokkaido</span></div>
+      <div class="paths">
+        <div id="expWrap"><h3>Work</h3><ul class="vine" id="exp"></ul></div>
+        <div id="eduWrap"><h3>Study</h3><ul class="vine" id="edu"></ul></div>
+      </div>
+    </section>
+
+    <section id="more">
+      <div class="duo">
+        <div id="awardsWrap"><div class="sec-head"><h2>Honours</h2></div><ul class="ribbons" id="awards"></ul></div>
+        <div id="langWrap"><div class="sec-head"><h2>Languages</h2></div><div class="langs" id="langs"></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<section class="closing" id="contact">
+  <svg class="bg draw" id="closingArt" viewBox="0 0 400 560" aria-hidden="true"></svg>
+  <div class="wrap inner">
+    <h2 id="cHead"></h2>
+    <p id="cText"></p>
+    <div class="row" id="cRow"></div>
+  </div>
+</section>
+<div class="wrap"><footer><span id="foot"></span><span>Pressed &amp; mounted in Hokkaido</span></footer></div>
+
+<script>/* Built-in copy of content.js (safety net). Do not edit here: edit content.js. */
+window.SITE_BACKUP = {
+
+  /* ---------- Top of the page ---------- */
+  profile: {
+    name: "Tergel Khereid",
+    nameNative: "",                 // her name in another script, e.g. Mongolian. "" hides it
+    title: "Ph.D. Candidate in Biotechnology & Food Chemistry",
+    affiliation: "Kitami Institute of Technology",
+    location: "Kitami, Hokkaido, Japan",
+    intro: "I study how natural plant extracts calm inflammation and allergy, one cell at a time.",
+    photo: "images/photo.jpg",
+    photoAlt: "Tergel Khereid in front of her research poster on fennel seed extract and mast cells",
+    cv: "",                          // e.g. "images/cv.pdf" to show a "Download CV" button. "" hides it
+  },
+
+  /* ---------- About ---------- */
+  about: {
+    paragraphs: [
+      "I am a Ph.D. Candidate in Biotechnology and Food Chemistry, specializing in Food Nutritional Chemistry at Kitami Institute of Technology, Japan. My research explores the therapeutic potential of natural plant extracts, with a focus on evaluating their anti-inflammatory and anti-allergic effects at the cellular level.",
+      "I am passionate about bridging the gap between natural raw materials and scientifically proven functional products.",
+      "[A sentence or two in her own words about life outside the lab]",
+    ],
+  },
+
+  /* ---------- Research themes ---------- */
+  research: [
+    {
+      title: "Plant extracts & the immune response",
+      text: "Testing natural plant extracts for anti-inflammatory and anti-allergic activity in cells, such as how fennel seed extract and its compounds calm the allergic response of mast cells.",
+      tag: "Now",
+    },
+    {
+      title: "Traditional Mongolian medicine, measured",
+      text: "Building animal models of Mongolian-medicine conditions such as Gastric Badakan and Xinheyi disease, and linking them to measurable markers in the blood.",
+      tag: "2017 to 2021",
+    },
+    {
+      title: "Safety & activity of herbal formulas",
+      text: "Measuring the toxicity of the Mongolian formula Alatanqiqige-3, and the active compounds and enzyme inhibition of rose flowers from eleven regions.",
+      tag: "2020 to 2021",
+    },
+  ],
+
+  /* ---------- Lab skills (short labels) ---------- */
+  skills: [
+    "HPLC",
+    "Western blotting",
+    "Enzyme assays",
+    "Animal models",
+    "Scientific writing",
+    "University teaching",
+    "Good Clinical Practice",
+    "Emergency medicine",
+  ],
+
+  /* ---------- Experience ---------- */
+  experience: [
+    {
+      role: "Research Assistant",
+      place: "Kitami Institute of Technology",
+      where: "Kitami, Hokkaido, Japan",
+      dates: "Oct 2023 to now",
+      text: "",
+    },
+    {
+      role: "Teaching Assistant",
+      place: "Kitami Institute of Technology",
+      where: "Kitami, Hokkaido, Japan",
+      dates: "Oct 2023 to now",
+      text: "",
+    },
+    {
+      role: "Resident Doctor",
+      place: "Inner Mongolia Daoran Hospital (内蒙古道然医院)",
+      where: "Hohhot, Inner Mongolia, China",
+      dates: "Mar 2021 to Dec 2022",
+      text: "",
+    },
+    {
+      role: "Internship Trainee",
+      place: "Inner Mongolia International Mongolian Medicine Hospital (内蒙古国际蒙医医院)",
+      where: "Hohhot, Inner Mongolia, China",
+      dates: "Mar 2016 to Mar 2017",
+      text: "Emergency medical services and general surgery.",
+    },
+  ],
+
+  /* ---------- Education ---------- */
+  education: [
+    {
+      degree: "Ph.D., Biochemistry",
+      place: "Kitami Institute of Technology",
+      where: "Kitami, Hokkaido, Japan",
+      dates: "Oct 2023 to Sep 2026",
+      text: "Biotechnology and Food Chemistry, specializing in Food Nutritional Chemistry.",
+    },
+    {
+      degree: "Master's, Traditional Chinese Medicine & Chinese Herbology",
+      place: "Inner Mongolia Medical University",
+      where: "Hohhot, Inner Mongolia, China",
+      dates: "Sep 2017 to Jul 2020",
+      text: "",
+    },
+    {
+      degree: "Bachelor's, Traditional Chinese Medicine & Chinese Herbology",
+      place: "Inner Mongolia Medical University",
+      where: "Hohhot, Inner Mongolia, China",
+      dates: "Sep 2012 to Jul 2017",
+      text: "",
+    },
+  ],
+
+  /* ---------- Publications (newest first) ----------
+     link: the web address of the paper. "" hides the button.
+     original: the title in the original language. "" hides it.      */
+  publications: [
+    {
+      title: "Study on the Correlation between \"Gastric Badakan Disease\" of Mongolian Medicine and Serum Pepsinogen and Gastrin-17",
+      original: "",
+      journal: "Journal of Medicine and Pharmacy of Chinese Minorities",
+      date: "Mar 2021",
+      summary: "Built a rat model of Gastric Badakan disease that reproduces its clinical signs, and showed the condition is closely tied to serum pepsinogen and gastrin-17.",
+      link: "",
+    },
+    {
+      title: "Study on the Correlation between \"Xinheyi Disease\" of Mongolian Medicine and Plasma cAMP and cGMP",
+      original: "",
+      journal: "Journal of Medicine and Pharmacy of Chinese Minorities",
+      date: "Jan 2021",
+      summary: "Built a rabbit model of Xinheyi disease and tracked plasma cAMP, cGMP and nitric oxide over 21 days to find the best modelling time.",
+      link: "",
+    },
+    {
+      title: "A Comparative Study of Pathological Stages, Etiology and Pathogenesis of Nonalcoholic Fatty Liver in Mongolian and Western Medicine",
+      original: "",
+      journal: "World Chinese Medicine",
+      date: "Nov 2020",
+      summary: "Compares how Mongolian and Western medicine describe each stage of fatty liver disease, as a basis for staged, combined treatment.",
+      link: "",
+    },
+    {
+      title: "Experimental Study on Acute Toxicity of Mongolian Medicine Alatanqiqige-3 in Mice",
+      original: "",
+      journal: "Chinese Journal of Ethnomedicine and Ethnopharmacy",
+      date: "Jul 2020",
+      summary: "Found an LD50 of 16.03 g/kg (95% CI 11.38 to 22.60 g/kg): the formula has some toxicity but is safe within a defined dose range.",
+      link: "",
+    },
+    {
+      title: "Etiological Analysis of Fatty Liver",
+      original: "",
+      journal: "[Journal name]",
+      date: "[Year]",
+      summary: "Reviews the causes of fatty liver through nutrition, chemistry, medicine, alcohol, endocrinology, genetics and psychology, from the view of Mongolian medicine's three roots.",
+      link: "",
+    },
+    {
+      title: "Tellimagrandin I Content and α-Glucosidase Inhibition in Rose Flowers",
+      original: "玫瑰花中新唢呐草素I的含量和α-葡萄糖苷酶抑制作用",
+      journal: "Traditional Mongolian Medicine of China",
+      date: "[Year]",
+      summary: "Measured tellimagrandin I in roses from 11 regions (0.7 to 7.4%). Every extract inhibited α-glucosidase, the Gansu Kushui rose most strongly (IC50 14.73 µg/mL), pointing to a role against type 2 diabetes.",
+      link: "",
+    },
+  ],
+
+  /* ---------- Patents ---------- */
+  patents: [
+    {
+      title: "A device for building animal models of Mongolian-medicine syndrome types",
+      original: "一种蒙医证型动物模型的建立装置",
+      number: "ZL 2025 2 0096567.7",
+      date: "Issued Apr 2025",
+      summary: "A cage system that uses light, sound and air flow to act on the gut's nervous system, so researchers can reproduce specific syndromes in mice.",
+    },
+  ],
+
+  /* ---------- Honours & awards ---------- */
+  awards: [
+    { title: "First-grade Student Scholarship", issuer: "Inner Mongolia Medical University", year: "" },
+    { title: "Merit Student Award", issuer: "Inner Mongolia Medical University", year: "" },
+    { title: "First Prize, 4th College Students Art Exhibition of Inner Mongolia", issuer: "Inner Mongolia", year: "" },
+  ],
+
+  /* ---------- Languages ----------
+     native: the language's name in its own script */
+  languages: [
+    { name: "Mongolian", native: "ᠮᠣᠩᠭᠣᠯ", level: "Native", note: "" },
+    { name: "Chinese", native: "中文", level: "Full professional", note: "" },
+    { name: "Japanese", native: "日本語", level: "Professional working", note: "JLPT N2 (2025)" },
+    { name: "English", native: "English", level: "Professional working", note: "TOEIC 750 (2023), IELTS 6.0 (2021)" },
+  ],
+
+  /* ---------- Contact ---------- */
+  contact: {
+    heading: "Say hello",
+    text: "Open to research collaborations and new positions.",
+    email: "[her-email@example.com]",
+  },
+
+  /* ---------- Links (buttons at the bottom) ---------- */
+  links: [
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/tergel-khereid-133959364/" },
+    { label: "[ResearchGate / Google Scholar]", url: "" },
+  ],
+};
+
+</script>
+<script>
+/* Site engine: loads content.js, falls back to the built-in copy if it is
+   broken, and shows the red / yellow helper boxes. Shared by every design. */
+(function () {
+  var E = (window.SiteEngine = { fatal: null, missingFile: false, notes: [] });
+
+  var local =
+    location.protocol === "file:" ||
+    /^(localhost|127\.0\.0\.1|\[::1\]|0\.0\.0\.0)$/.test(location.hostname);
+  E.local = local;
+
+  // Catch typos in content.js (syntax errors) and missing files / pictures.
+  window.addEventListener(
+    "error",
+    function (ev) {
+      var t = ev.target;
+      if (t && t !== window && t.tagName) {
+        var src = t.getAttribute("src") || "";
+        if (t.tagName === "SCRIPT" && /content\.js/.test(src)) E.missingFile = true;
+        if (t.tagName === "IMG" && src) E.note("Picture not found: \"" + src + "\". Check the file is in the images folder and the name matches exactly (capitals count).");
+        return;
+      }
+      if (/content\.js/.test(ev.filename || "") && !E.fatal) {
+        E.fatal = { line: ev.lineno || 0, msg: ev.message || "" };
+      }
+    },
+    true
+  );
+
+  E.note = function (msg) {
+    if (E.notes.indexOf(msg) < 0) E.notes.push(msg);
+    if (E._booted) E.showBoxes();
+  };
+
+  /* ---------- helpers for the design ---------- */
+  E.esc = function (s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  };
+  E.isTodo = function (s) { return /^\s*\[[^\]]*\]\s*$/.test(String(s || "")); };
+  // **bold**, *italic*, [text](https://...)
+  E.md = function (s) {
+    if (s == null) return "";
+    if (E.isTodo(s)) return '<span class="todo">' + E.esc(s) + "</span>";
+    var h = E.esc(s).replace(/&quot;([^&]*?)&quot;/g, "\u201C$1\u201D");   // "text" shows as curly quotes
+    h = h.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+|[\w./-]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>");
+    h = h.replace(/\[([^\]]+)\]/g, '<span class="todo">[$1]</span>');
+    return h;
+  };
+  E.has = function (v) {
+    if (Array.isArray(v)) return v.length > 0;
+    return v != null && String(v).trim() !== "";
+  };
+  E.list = function (v) { return Array.isArray(v) ? v : []; };
+  E.$ = function (sel, root) { return (root || document).querySelector(sel); };
+  E.$$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  // Fill an element with HTML, or hide its section when empty.
+  E.fill = function (sel, html, sectionSel) {
+    var el = E.$(sel);
+    if (!el) return;
+    el.innerHTML = html || "";
+    var sec = sectionSel ? el.closest(sectionSel) : null;
+    if (sec) sec.hidden = !html;
+  };
+  // Picture with a designed placeholder when the file is missing.
+  E.picture = function (src, alt, label) {
+    var ph = '<span class="ph" role="img" aria-label="' + E.esc(alt || label) + '"><span>' + E.esc(label || "Photo") + "</span></span>";
+    if (!E.has(src)) return ph;
+    return '<img src="' + E.esc(src) + '" alt="' + E.esc(alt) + '" onerror="this.hidden=true;this.nextElementSibling.hidden=false">' +
+      ph.replace('<span class="ph"', '<span class="ph" hidden');
+  };
+
+  /* ---------- field-name checks for the yellow box ---------- */
+  function keysOfItems(arr) {
+    var k = {};
+    arr.forEach(function (it) {
+      if (it && typeof it === "object" && !Array.isArray(it)) Object.keys(it).forEach(function (x) { k[x] = 1; });
+    });
+    return k;
+  }
+  function closest(word, options) {
+    var best = null, bestD = 3;
+    options.forEach(function (o) {
+      var d = lev(word.toLowerCase(), o.toLowerCase());
+      if (d < bestD) { bestD = d; best = o; }
+    });
+    return best;
+  }
+  function lev(a, b) {
+    var m = [], i, j;
+    for (i = 0; i <= b.length; i++) m[i] = [i];
+    for (j = 0; j <= a.length; j++) m[0][j] = j;
+    for (i = 1; i <= b.length; i++)
+      for (j = 1; j <= a.length; j++)
+        m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (b[i - 1] === a[j - 1] ? 0 : 1));
+    return m[b.length][a.length];
+  }
+  function check(ref, val, path) {
+    if (Array.isArray(ref)) {
+      if (!Array.isArray(val)) { E.note(path + " should be a list in [ ] brackets."); return; }
+      var known = keysOfItems(ref);
+      if (!Object.keys(known).length) return;
+      val.forEach(function (it, i) {
+        if (!it || typeof it !== "object") return;
+        Object.keys(it).forEach(function (k) {
+          if (!known[k]) {
+            var s = closest(k, Object.keys(known));
+            E.note("Unknown field name \"" + k + "\" in " + path + " item " + (i + 1) + (s ? " (did you mean \"" + s + "\"?)" : "") + ". It is ignored.");
+          }
+        });
+      });
+      return;
+    }
+    if (ref && typeof ref === "object") {
+      if (!val || typeof val !== "object") { E.note(path + " is missing or not a { } block."); return; }
+      Object.keys(val).forEach(function (k) {
+        if (!(k in ref)) {
+          var s = closest(k, Object.keys(ref));
+          E.note("Unknown field name \"" + k + "\" in " + path + (s ? " (did you mean \"" + s + "\"?)" : "") + ". It is ignored.");
+        }
+      });
+      Object.keys(ref).forEach(function (k) {
+        if (!(k in val)) E.note("\"" + k + "\" is missing from " + path + ". The page treats it as empty.");
+        else check(ref[k], val[k], path + "." + k);
+      });
+    }
+  }
+
+  /* ---------- boxes ---------- */
+  function box(id, cls, html) {
+    var b = document.getElementById(id);
+    if (!b) {
+      b = document.createElement("div");
+      b.id = id;
+      b.className = "se-box " + cls;
+      b.setAttribute("role", cls === "se-red" ? "alert" : "status");
+      document.body.appendChild(b);
+    }
+    b.innerHTML = html + '<button type="button" class="se-x" aria-label="Close">×</button>';
+    b.querySelector(".se-x").onclick = function () { b.remove(); };
+  }
+  E.showBoxes = function () {
+    if (E.redHtml) box("se-red", "se-red", E.redHtml);
+    if (local && E.notes.length) {
+      box("se-yellow", "se-yellow",
+        "<strong>Small things to fix</strong> (only you see this box, because the page is open from your computer)<ul>" +
+        E.notes.map(function (n) { return "<li>" + E.esc(n) + "</li>"; }).join("") + "</ul>");
+    }
+  };
+
+  var css =
+    ".se-box{position:fixed;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));z-index:9999;max-width:640px;margin:0 auto;padding:14px 44px 14px 16px;border-radius:10px;font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.25)}" +
+    ".se-red{top:calc(12px + env(safe-area-inset-top,0px));background:#fde8e8;color:#7a1010;border:2px solid #d33}" +
+    ".se-yellow{bottom:calc(12px + env(safe-area-inset-bottom,0px));background:#fff6cc;color:#5a4500;border:2px solid #e0b400;max-height:30vh;overflow:auto}" +
+    ".se-box ul{margin:6px 0 0;padding-left:18px}.se-box code{background:rgba(0,0,0,.08);padding:0 4px;border-radius:4px}" +
+    ".se-x{position:absolute;top:8px;right:8px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(0,0,0,.08);color:inherit;font-size:18px;cursor:pointer}";
+
+  /* ---------- start ---------- */
+  E.boot = function (render) {
+    var st = document.createElement("style");
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    var data = window.SITE, backup = window.SITE_BACKUP, usingBackup = false;
+    if (!data || typeof data !== "object") {
+      usingBackup = true;
+      data = backup;
+      if (E.missingFile) {
+        E.redHtml = "<strong>content.js could not be found.</strong> Make sure it sits right next to index.html with exactly that name. Showing the built-in copy for now.";
+      } else if (E.fatal && E.fatal.line) {
+        E.redHtml = "<strong>content.js has a mistake on line " + E.fatal.line + ".</strong> Look at that line and the one above it, usually for a missing comma <code>,</code> or quote <code>\"</code>, or a curly quote <code>“</code>. The page is showing the last good version until it's fixed." +
+          (E.fatal.msg ? '<br><small>Browser says: ' + E.esc(E.fatal.msg) + "</small>" : "");
+      } else {
+        E.redHtml = "<strong>content.js has a mistake</strong>, so the page is showing the last good version. Check your most recent change for a missing comma <code>,</code> or quote <code>\"</code>, or a curly quote <code>“</code>." +
+          (location.protocol === "file:" ? "<br><small>Browsers hide the exact line number for files opened from your computer. Open the page in Firefox, or online, to see it.</small>" : "");
+      }
+    } else if (backup) {
+      check(backup, data, "SITE");
+    }
+    (function walk(v, path) {
+      if (typeof v === "string") { if (/\[[^\]]+\](?!\()/.test(v)) E.note("Placeholder still to fill in at " + path + ": " + v); return; }
+      if (v && typeof v === "object") Object.keys(v).forEach(function (k) { walk(v[k], path + (Array.isArray(v) ? " item " + (+k + 1) : "." + k)); });
+    })(data, "SITE");
+
+    try {
+      render(data, E);
+    } catch (err) {
+      if (!usingBackup && backup) {
+        E.redHtml = "<strong>Something in content.js confused the page</strong> (" + E.esc(err.message) + "). Showing the last good version. Check that lists use [ ] and blocks use { }.";
+        try { render(backup, E); } catch (e2) {}
+      }
+      if (window.console) console.error(err);
+    }
+    E._booted = true;
+    E.showBoxes();
+  };
+})();
+
+</script>
+<script src="content.js"></script>
+<script>
+/* ---------- botanical drawing (generated, so it never needs editing) ---------- */
+var Bot = (function(){
+  var NS = "http://www.w3.org/2000/svg";
+  function rng(seed){ return function(){ seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; }; }
+  function P(x,y){ return {x:x,y:y}; }
+  function add(a,b,k){ return P(a.x+b.x*k, a.y+b.y*k); }
+  function f(p){ return p.x.toFixed(1)+" "+p.y.toFixed(1); }
+  function el(svg, tag, attrs, cls, delay){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (cls) e.setAttribute("class", cls);
+    if (cls && cls.indexOf("ln") > -1) e.setAttribute("pathLength", "1");
+    if (delay != null) e.style.animationDelay = delay.toFixed(2) + "s";
+    (svg.__g || svg).appendChild(e);
+    return e;
+  }
+  function cubic(a,b,c,d,t){ var u=1-t; return P(u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*c.x+t*t*t*d.x, u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*c.y+t*t*t*d.y); }
+  function tangent(a,b,c,d,t){ var p=cubic(a,b,c,d,Math.max(0,t-0.01)), q=cubic(a,b,c,d,Math.min(1,t+0.01)); var dx=q.x-p.x, dy=q.y-p.y, l=Math.hypot(dx,dy)||1; return P(dx/l,dy/l); }
+
+  function leaflet(svg, b, ang, L, W, t0){
+    var d = P(Math.cos(ang), Math.sin(ang)), n = P(-d.y, d.x);
+    var tip = add(b,d,L);
+    var c1 = add(add(b,d,.25*L),n,W), c2 = add(add(b,d,.8*L),n,.7*W), c3 = add(add(b,d,.8*L),n,-.7*W), c4 = add(add(b,d,.25*L),n,-W);
+    var path = "M"+f(b)+" C"+f(c1)+" "+f(c2)+" "+f(tip)+" C"+f(c3)+" "+f(c4)+" "+f(b)+"Z";
+    el(svg,"path",{d:path,"data-t":"leaf"},"wash-leaf",t0+.6);
+    el(svg,"path",{d:path,"data-t":"leaf"},"ln",t0);
+    el(svg,"path",{d:"M"+f(b)+" L"+f(add(b,d,.92*L))},"ln",t0+.2);
+    for (var i=1;i<=3;i++){
+      var m = add(b,d,L*(.18+.2*i)), s = .55*W*(1-.18*i);
+      el(svg,"path",{d:"M"+f(m)+" L"+f(add(add(m,d,.14*L),n,s))+" M"+f(m)+" L"+f(add(add(m,d,.14*L),n,-s))},"ln",t0+.3+.05*i);
+    }
+  }
+  function leaf(svg, node, ang, size, pairs, t0){
+    var d = P(Math.cos(ang), Math.sin(ang)), n = P(-d.y,d.x);
+    var len = size*(pairs*.55+.6), end = add(node,d,len);
+    var g = document.createElementNS(NS,"g"); g.setAttribute("class","sway"); (svg.__g||svg).appendChild(g);
+    var saved = svg.__g; svg.__g = g;
+    el(svg,"path",{d:"M"+f(node)+" Q"+f(add(add(node,d,len*.5),n,size*.08))+" "+f(end)},"ln",t0);
+    el(svg,"path",{d:"M"+f(node)+" Q"+f(add(add(node,d,len*.5),n,size*.08))+" "+f(end),"data-t":"leaf"},"hit wide");
+    for (var i=0;i<pairs;i++){
+      var at = add(node,d,len*(.32+.6*i/pairs)), L = size*(.62+.1*i/pairs), W=L*.36;
+      leaflet(svg, at, ang-1.05, L, W, t0+.15+i*.12);
+      leaflet(svg, at, ang+1.05, L, W, t0+.2+i*.12);
+    }
+    leaflet(svg, end, ang, size*.72, size*.27, t0+.2+pairs*.12);
+    svg.__g = saved;
+  }
+  function petal(svg, c, ang, L, t0){
+    var d=P(Math.cos(ang),Math.sin(ang)), n=P(-d.y,d.x);
+    var tl=add(add(c,d,.95*L),n,.16*L), tr=add(add(c,d,.95*L),n,-.16*L), notch=add(c,d,.84*L);
+    var path="M"+f(c)+" C"+f(add(add(c,d,.3*L),n,.5*L))+" "+f(add(add(c,d,1.02*L),n,.5*L))+" "+f(tl)+
+      " Q"+f(add(add(c,d,.92*L),n,.04*L))+" "+f(notch)+" Q"+f(add(add(c,d,.92*L),n,-.04*L))+" "+f(tr)+
+      " C"+f(add(add(c,d,1.02*L),n,-.5*L))+" "+f(add(add(c,d,.3*L),n,-.5*L))+" "+f(c)+"Z";
+    el(svg,"path",{d:path,"data-t":"petal"},"wash-rose",t0+.7);
+    el(svg,"path",{d:path,"data-t":"petal"},"ln",t0);
+    for (var k=-1;k<=1;k++) el(svg,"path",{d:"M"+f(add(add(c,d,.3*L),n,k*.08*L))+" Q"+f(add(add(c,d,.6*L),n,k*.22*L))+" "+f(add(add(c,d,.82*L),n,k*.3*L))},"ln",t0+.35);
+  }
+  function flower(svg, c, L, rot, t0){
+    for (var i=0;i<5;i++) petal(svg, c, rot+i*Math.PI*2/5, L, t0+i*.1);
+    el(svg,"circle",{cx:c.x,cy:c.y,r:L*.2},"ln",t0+.6);
+    el(svg,"circle",{cx:c.x,cy:c.y,r:L*.42,"data-t":"pollen"},"hitf");
+    for (var j=0;j<22;j++){
+      var a=j*Math.PI*2/22 + (j%2)*.1, r1=L*.2, r2=L*(.3+ (j%3)*.04);
+      var p1=P(c.x+Math.cos(a)*r1,c.y+Math.sin(a)*r1), p2=P(c.x+Math.cos(a)*r2,c.y+Math.sin(a)*r2);
+      el(svg,"path",{d:"M"+f(p1)+" L"+f(p2)},"ln",t0+.8+j*.01);
+      var dot=el(svg,"circle",{cx:p2.x,cy:p2.y,r:1.6},"anther",t0+1);
+      dot.style.setProperty("--o",".85");
+    }
+  }
+  function hip(svg, base, ang, r, t0){
+    var d=P(Math.cos(ang),Math.sin(ang)), c=add(base,d,r*1.1);
+    var e=el(svg,"ellipse",{cx:c.x,cy:c.y,rx:r,ry:r*.92,"data-t":"hip"},"wash-hip",t0+.6); e.style.setProperty("--o",".55");
+    el(svg,"ellipse",{cx:c.x,cy:c.y,rx:r,ry:r*.92,"data-t":"hip"},"ln",t0);
+    el(svg,"ellipse",{cx:c.x,cy:c.y,rx:r,ry:r*.92,"data-t":"hip"},"hitf");
+    el(svg,"path",{d:"M"+f(add(c,P(-r*.45,-r*.35),1))+" Q"+f(add(c,P(-r*.2,-r*.6),1))+" "+f(add(c,P(r*.1,-r*.55),1))},"ln",t0+.3);
+    var top=add(c,d,r*.95);
+    for (var i=-2;i<=2;i++){ var a=ang+i*.42, cd="M"+f(top)+" q"+(Math.cos(a)*r*.9).toFixed(1)+" "+(Math.sin(a)*r*.9).toFixed(1)+" "+(Math.cos(a+.5)*r*1.4).toFixed(1)+" "+(Math.sin(a+.5)*r*1.4).toFixed(1);
+      el(svg,"path",{d:cd},"ln",t0+.5+i*.03); el(svg,"path",{d:cd,"data-t":"hip"},"hit thin"); }
+  }
+  function prickles(svg,a,b,c,d,count,t0,R){
+    for (var i=0;i<count;i++){
+      var t=.08+.84*i/count+R()*.03, p=cubic(a,b,c,d,t), tg=tangent(a,b,c,d,t), side=(i%2?1:-1), n=P(-tg.y*side,tg.x*side);
+      var q=add(add(p,n,5+R()*4),tg,-3);
+      el(svg,"path",{d:"M"+f(p)+" L"+f(q)},"ln",t0+t*.8);
+      el(svg,"path",{d:"M"+f(p)+" L"+f(q),"data-t":"stem"},"hit thin");
+    }
+  }
+
+  // Large hero sprig
+  function rose(svg){
+    svg.innerHTML=""; var R=rng(7);
+    var a=P(205,552), b=P(170,420), c=P(250,250), d=P(222,150);
+    el(svg,"path",{d:"M"+f(a)+" C"+f(b)+" "+f(c)+" "+f(d)},"ln",0);
+    el(svg,"path",{d:"M"+f(a)+" C"+f(b)+" "+f(c)+" "+f(d),"data-t":"stem"},"hit");
+    el(svg,"path",{d:"M"+f(add(a,P(5,0),1))+" C"+f(add(b,P(5,0),1))+" "+f(add(c,P(4,0),1))+" "+f(add(d,P(3,0),1))},"ln",.1);
+    prickles(svg,a,b,c,d,22,.2,R);
+    leaf(svg, cubic(a,b,c,d,.2), -2.75, 44, 3, .5);
+    leaf(svg, cubic(a,b,c,d,.42), -0.25, 46, 3, .8);
+    leaf(svg, cubic(a,b,c,d,.66), -2.65, 40, 2, 1.1);
+    // side branch with hip
+    var s=cubic(a,b,c,d,.55), e=P(330,250);
+    el(svg,"path",{d:"M"+f(s)+" Q"+f(P(300,330))+" "+f(e)},"ln",1.0);
+    el(svg,"path",{d:"M"+f(s)+" Q"+f(P(300,330))+" "+f(e),"data-t":"stem"},"hit");
+    hip(svg, e, -1.0, 22, 1.4);
+    leaf(svg, P(302,300), .3, 30, 2, 1.3);
+    // sepals under flower + flower
+    for (var i=0;i<5;i++){ var an=Math.PI/2+i*1.256-.3, sd="M"+f(d)+" q"+(Math.cos(an)*30).toFixed(1)+" "+(Math.sin(an)*20+10).toFixed(1)+" "+(Math.cos(an)*44).toFixed(1)+" "+(Math.sin(an)*36+18).toFixed(1);
+      el(svg,"path",{d:sd},"ln",1.4); el(svg,"path",{d:sd,"data-t":"leaf"},"hit thin"); }
+    flower(svg, P(222,118), 78, -.35, 1.6);
+    // bud
+    var bud=P(140,150);
+    el(svg,"path",{d:"M"+f(cubic(a,b,c,d,.86))+" Q"+f(P(170,190))+" "+f(bud)},"ln",1.2);
+    el(svg,"path",{d:"M"+f(cubic(a,b,c,d,.86))+" Q"+f(P(170,190))+" "+f(bud),"data-t":"stem"},"hit");
+    el(svg,"path",{d:"M"+f(bud)+" c-10 -6 -12 -26 2 -38 c12 10 14 30 -2 38z","data-t":"petal"},"wash-rose",1.8);
+    el(svg,"path",{d:"M"+f(bud)+" c-10 -6 -12 -26 2 -38 c12 10 14 30 -2 38z","data-t":"petal"},"ln",1.5);
+    el(svg,"path",{d:"M"+f(bud)+" q-16 -6 -16 -24 M"+f(bud)+" q16 -8 12 -26"},"ln",1.6);
+    el(svg,"path",{d:"M"+f(bud)+" q-16 -6 -16 -24 M"+f(bud)+" q16 -8 12 -26","data-t":"leaf"},"hit thin");
+  }
+  // Small sprigs for the research sheets
+  function sprig(svg, kind){
+    svg.innerHTML=""; var R=rng(kind*31+3);
+    if (kind===0){ // flowering sprig
+      el(svg,"path",{d:"M150 148 Q140 100 150 52"},"ln",0);
+      leaf(svg,P(146,118),-2.6,22,2,.2); leaf(svg,P(148,96),-.5,22,2,.3);
+      flower(svg,P(150,44),30,0,.4);
+    } else if (kind===1){ // root and herb (Mongolian materia medica)
+      el(svg,"path",{d:"M150 92 Q146 60 150 20"},"ln",0);
+      for (var i=0;i<4;i++) leaf(svg,P(149,80-i*14),(i%2?-.55:-2.6),16,1,.15+i*.1);
+      el(svg,"path",{d:"M150 92 Q158 110 150 128 Q144 140 152 150 M150 104 Q132 116 126 138 M152 112 Q172 122 178 144 M126 138 l-6 8 M178 144 l5 7"},"ln",.4);
+      el(svg,"path",{d:"M100 92 L200 92"},"ln",.2);
+    } else { // hips and pressed petals
+      el(svg,"path",{d:"M110 150 Q130 100 160 70 Q180 50 210 44"},"ln",0);
+      hip(svg,P(160,70),-.6,14,.3); hip(svg,P(210,44),-.2,12,.5);
+      leaf(svg,P(130,110),-2.3,20,2,.4);
+      petal(svg,P(90,60),-.4,26,.6); petal(svg,P(232,120),2.2,24,.7);
+    }
+  }
+  return { rose: rose, sprig: sprig };
+})();
+
+/* ---------- page ---------- */
+function render(S, E){
+  var p = S.profile || {}, md = E.md, esc = E.esc, has = E.has, L = E.list;
+  var parts = String(p.name || "").trim().split(/\s+/);
+  document.getElementById("name").innerHTML = esc(parts[0] || "") + (parts.length > 1 ? "<em>" + esc(parts.slice(1).join(" ")) + "</em>" : "");
+  document.getElementById("initials").textContent = (parts[0]||"T").charAt(0) + (parts[1]||"").charAt(0);
+  document.getElementById("shortname").textContent = parts.length ? (parts[0].charAt(0) + ". " + (parts.slice(1).join(" ") || parts[0])) : "";
+  document.title = (p.name || "Home");
+  E.fill("#native", has(p.nameNative) ? md(p.nameNative) : "");
+  document.getElementById("native").hidden = !has(p.nameNative);
+  document.getElementById("role").innerHTML = (has(p.title) ? md(p.title) : "") + (has(p.affiliation) ? "<span>" + md(p.affiliation) + "</span>" : "");
+  document.getElementById("intro").innerHTML = md(p.intro); document.getElementById("intro").hidden = !has(p.intro);
+
+  var startYear = "";
+  L(S.experience).concat(L(S.education)).forEach(function(x){ var m = String(x.dates||"").match(/\d{4}/); if (m && (!startYear || m[0] > startYear) && /now|present/i.test(x.dates||"")) startYear = m[0]; });
+  document.getElementById("specno").textContent = "No. " + new Date().getFullYear();
+  var rows = [["Name", p.name], ["Field", p.title], ["Locality", p.location ? p.location + (/kitami/i.test(p.location) ? " · 43°48′N 143°54′E" : "") : ""], ["Det.", p.affiliation]];
+  document.getElementById("specdl").innerHTML = rows.filter(function(r){ return has(r[1]); }).map(function(r){ return "<dt>"+r[0]+"</dt><dd>"+md(r[1])+"</dd>"; }).join("");
+  E.fill("#cv", has(p.cv) ? '<a class="btn" href="'+esc(p.cv)+'" target="_blank" rel="noopener">Download CV ↓</a>' : "");
+
+  // photo
+  document.getElementById("photo").innerHTML = "<i></i><i></i><i></i><i></i>" + E.picture(p.photo, p.photoAlt, "Her portrait goes here (images/photo.jpg)") + "<figcaption>" + esc(parts[0]||"") + "</figcaption>";
+
+  // about
+  var paras = L(S.about && S.about.paragraphs).filter(has);
+  E.fill("#aboutText", paras.map(function(t){ return "<p>"+md(t)+"</p>"; }).join(""));
+  E.fill("#skills", L(S.skills).filter(has).map(function(s){ return "<li>"+md(s)+"</li>"; }).join(""));
+  document.getElementById("about").hidden = !paras.length && !has(p.photo);
+
+  // research
+  var sheets = L(S.research);
+  E.fill("#sheets", sheets.map(function(r,i){
+    return '<article class="sheet"><svg class="draw" viewBox="0 0 300 160" aria-hidden="true" data-k="'+(i%3)+'"></svg><h3>'+md(r.title)+'</h3><p>'+md(r.text)+'</p>' +
+      (has(r.tag) ? '<div class="tag"><dl><dt>Collected</dt><dd>'+md(r.tag)+'</dd></dl></div>' : '') + '</article>';
+  }).join(""), "section");
+  E.$$("#sheets svg").forEach(function(s){ Bot.sprig(s, +s.getAttribute("data-k")); });
+
+  // publications
+  var pubs = L(S.publications);
+  document.getElementById("pubcount").textContent = pubs.length ? pubs.length + (pubs.length === 1 ? " accession" : " accessions") : "Accessions";
+  E.fill("#pubs", pubs.map(function(x){
+    return '<details><summary><span class="yr">'+md(x.date)+'</span><span><span class="t">'+md(x.title)+'</span>' +
+      (has(x.original) ? '<span class="o" lang="zh">'+md(x.original)+'</span>' : '') +
+      '<span class="j">'+md(x.journal)+'</span></span><span class="pm" aria-hidden="true">+</span></summary>' +
+      '<div class="sum">' + (has(x.summary) ? '<p>'+md(x.summary)+'</p>' : '') + (has(x.link) ? '<a class="btn" href="'+esc(x.link)+'" target="_blank" rel="noopener">Read the paper ↗</a>' : '') + '</div></details>';
+  }).join(""));
+  E.fill("#patents", L(S.patents).map(function(x){
+    return '<div class="patent"><div><div class="lbl">Patent</div><h3>'+md(x.title)+'</h3>' + (has(x.original) ? '<div class="o" lang="zh" style="color:var(--ink-soft)">'+md(x.original)+'</div>' : '') +
+      (has(x.summary) ? '<p>'+md(x.summary)+'</p>' : '') + '</div><div class="stamp">Patented<br>'+md(x.number)+'<br>'+md(x.date)+'</div></div>';
+  }).join(""));
+  document.getElementById("publications").hidden = !pubs.length && !L(S.patents).length;
+
+  // path
+  var leafSvg = '<svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 22 C4 10 12 4 23 3 C22 14 16 22 4 22Z" fill="var(--leaf-wash)" stroke="var(--leaf)" stroke-width="1.3"/><path d="M4 22 L17 9" stroke="var(--leaf)" stroke-width="1.1" fill="none"/></svg>';
+  E.fill("#exp", L(S.experience).map(function(x){
+    return "<li>"+leafSvg+'<div class="d">'+md(x.dates)+'</div><div class="r">'+md(x.role)+'</div><div class="p">'+md(x.place)+(has(x.where) ? ", " + md(x.where) : "")+"</div>"+(has(x.text) ? '<p class="x">'+md(x.text)+"</p>" : "")+"</li>";
+  }).join(""), "#expWrap");
+  E.fill("#edu", L(S.education).map(function(x){
+    return "<li>"+leafSvg+'<div class="d">'+md(x.dates)+'</div><div class="r">'+md(x.degree)+'</div><div class="p">'+md(x.place)+(has(x.where) ? ", " + md(x.where) : "")+"</div>"+(has(x.text) ? '<p class="x">'+md(x.text)+"</p>" : "")+"</li>";
+  }).join(""), "#eduWrap");
+  document.getElementById("path").hidden = !L(S.experience).length && !L(S.education).length;
+
+  // awards + languages
+  var rosette = '<svg viewBox="0 0 44 44" aria-hidden="true"><g fill="var(--rose-wash)" stroke="var(--rose)" stroke-width="1.2">' +
+    [0,1,2,3,4,5,6,7].map(function(i){ return '<ellipse cx="22" cy="12" rx="5" ry="9" transform="rotate('+(i*45)+' 22 22)"/>'; }).join("") +
+    '</g><circle cx="22" cy="22" r="6" fill="var(--sheet)" stroke="var(--rose)" stroke-width="1.2"/></svg>';
+  E.fill("#awards", L(S.awards).map(function(x){
+    return "<li>"+rosette+'<div><div class="t">'+md(x.title)+'</div><div class="i">'+md(x.issuer)+(has(x.year) ? " · " + md(x.year) : "")+"</div></div></li>";
+  }).join(""), "#awardsWrap");
+  E.fill("#langs", L(S.languages).map(function(x){
+    var g = has(x.native) ? x.native : x.name, vert = /[\u1800-\u18AF]/.test(g), latin = /^[\x00-\x7F]+$/.test(g);
+    return '<div class="lang"><span class="n" aria-hidden="true"><i class="'+(vert ? 'v' : latin ? 'lat' : '')+'"'+(vert ? ' lang="mn-Mong"' : '')+'>'+esc(g)+'</i></span>' +
+      '<div><b>'+md(x.name)+'</b><span class="lv">'+md(x.level)+'</span>'+(has(x.note) ? '<small>'+md(x.note)+'</small>' : '')+'</div></div>';
+  }).join(""), "#langWrap");
+  document.getElementById("more").hidden = !L(S.awards).length && !L(S.languages).length;
+
+  // contact
+  var c = S.contact || {};
+  document.getElementById("cHead").innerHTML = has(c.heading) ? md(c.heading).replace(/(\S+)$/, "<em>$1</em>") : "";
+  E.fill("#cText", has(c.text) ? md(c.text) : "");
+  var row = "";
+  if (has(c.email)) row += '<span class="mail" id="mail">'+md(c.email)+'</span><button class="btn" type="button" id="copy">Copy email</button>';
+  L(S.links).forEach(function(l){
+    if (has(l.url)) row += '<a class="btn" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+md(l.label)+' ↗</a>';
+    else if (E.isTodo(l.label)) row += '<span class="btn">'+md(l.label)+'</span>';
+  });
+  document.getElementById("cRow").innerHTML = row;
+  var copy = document.getElementById("copy");
+  if (copy) copy.onclick = function(){
+    var t = String(c.email).replace(/^\[|\]$/g, "");
+    var done = function(){ copy.textContent = "Copied"; setTimeout(function(){ copy.textContent = "Copy email"; }, 1600); };
+    try { navigator.clipboard.writeText(t).then(done, sel); } catch(e){ sel(); }
+    function sel(){ var r = document.createRange(); r.selectNodeContents(document.getElementById("mail")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  };
+  document.getElementById("foot").textContent = "© " + new Date().getFullYear() + " " + (p.name || "");
+
+  // drawings
+  Bot.rose(document.getElementById("rose"));
+  Bot.rose(document.getElementById("closingArt"));
+  setupLoupe();
+}
+
+/* ---------- cell microscope: the lens shows the cells of whatever part of the plant is under it ---------- */
+var Cells = (function(){
+  var TISSUES = {
+    petal:  { name: "Petal",           what: "conical cells that catch the light" },
+    leaf:   { name: "Leaf",            what: "chloroplasts streaming round each cell" },
+    stem:   { name: "Stem",            what: "xylem carrying water upward" },
+    hip:    { name: "Rose hip",        what: "cells packed with carotenoid pigment" },
+    pollen: { name: "Anther",          what: "pollen grains" },
+    paper:  { name: "Herbarium paper", what: "cellulose fibres" }
+  };
+  function hash(i, j, k){ var h = (Math.imul(i|0, 374761393) + Math.imul(j|0, 668265263) + Math.imul((k|0) + 1, 1442695041)) | 0;
+    h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+  function site(i, j, s, jit, seed){ return [(i + .5 + (hash(i, j, seed) - .5) * jit) * s, (j + .5 + (hash(j, i, seed + 7) - .5) * jit) * s]; }
+  function clip(poly, p, q){
+    var mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2, nx = q[0] - p[0], ny = q[1] - p[1], out = [];
+    for (var k = 0; k < poly.length; k++){
+      var a = poly[k], b = poly[(k + 1) % poly.length], da = (a[0] - mx) * nx + (a[1] - my) * ny, db = (b[0] - mx) * nx + (b[1] - my) * ny;
+      if (da <= 0) out.push(a);
+      if ((da <= 0) !== (db <= 0)){ var t = da / (da - db); out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]); }
+    }
+    return out;
+  }
+  // one Voronoi cell of a jittered grid (the way real plant cells pack together)
+  function vcell(i, j, s, jit, seed){
+    var p = site(i, j, s, jit, seed), r = 2 * s, poly = [[p[0]-r, p[1]-r], [p[0]+r, p[1]-r], [p[0]+r, p[1]+r], [p[0]-r, p[1]+r]];
+    for (var di = -1; di <= 1; di++) for (var dj = -1; dj <= 1; dj++) if (di || dj) poly = clip(poly, p, site(i + di, j + dj, s, jit, seed));
+    return { p: p, poly: poly, h: hash(i, j, seed + 3), h2: hash(j, i, seed + 11) };
+  }
+  function shrink(poly, p, f){ return poly.map(function(v){ return [p[0] + (v[0] - p[0]) * f, p[1] + (v[1] - p[1]) * f]; }); }
+  function rounded(ctx, poly){
+    var n = poly.length; if (n < 3) return;
+    var m = function(a, b){ return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; }, s0 = m(poly[n-1], poly[0]);
+    ctx.beginPath(); ctx.moveTo(s0[0], s0[1]);
+    for (var k = 0; k < n; k++){ var nx = m(poly[k], poly[(k + 1) % n]); ctx.quadraticCurveTo(poly[k][0], poly[k][1], nx[0], nx[1]); }
+    ctx.closePath();
+  }
+  function along(poly, t){ // a point a fraction t of the way round a polygon
+    var L = 0, segs = [];
+    for (var k = 0; k < poly.length; k++){ var a = poly[k], b = poly[(k + 1) % poly.length], l = Math.hypot(b[0] - a[0], b[1] - a[1]); segs.push(l); L += l; }
+    var d = ((t % 1) + 1) % 1 * L;
+    for (k = 0; k < poly.length; k++){ if (d <= segs[k]){ var a2 = poly[k], b2 = poly[(k + 1) % poly.length], u = d / (segs[k] || 1); return [a2[0] + (b2[0] - a2[0]) * u, a2[1] + (b2[1] - a2[1]) * u, Math.atan2(b2[1] - a2[1], b2[0] - a2[0])]; } d -= segs[k]; }
+    return [poly[0][0], poly[0][1], 0];
+  }
+  function rgba(c, a){ return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")"; }
+  var GLINT = [255, 249, 244];   // light caught by a cell, the same in both themes
+  function each(cx, cy, R, s, fn){ for (var i = Math.floor((cx - R) / s) - 1; i <= Math.floor((cx + R) / s) + 1; i++) for (var j = Math.floor((cy - R) / s) - 1; j <= Math.floor((cy + R) / s) + 1; j++) fn(i, j); }
+
+  var draw = {
+    leaf: function(ctx, cx, cy, R, t, C){
+      var s = 36; ctx.fillStyle = rgba(C.leaf, .45); ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+      each(cx, cy, R, s, function(i, j){
+        var c = vcell(i, j, s, .85, 1), body = shrink(c.poly, c.p, .9);
+        if (c.h < .07){ // a stoma: two guard cells around a pore
+          var a = c.h2 * Math.PI, ux = Math.cos(a), uy = Math.sin(a);
+          ctx.fillStyle = rgba(C.sheet, 1); rounded(ctx, body); ctx.fill();
+          for (var k = -1; k <= 1; k += 2){ ctx.beginPath(); ctx.ellipse(c.p[0] - uy * 6 * k, c.p[1] + ux * 6 * k, 13, 6, a, 0, 6.283); ctx.fillStyle = rgba(C.leafWash, .95); ctx.fill(); ctx.strokeStyle = rgba(C.leaf, 1); ctx.lineWidth = 1.2; ctx.stroke(); }
+          ctx.beginPath(); ctx.ellipse(c.p[0], c.p[1], 8, 1.6, a, 0, 6.283); ctx.fillStyle = rgba(C.ink, .8); ctx.fill();
+          return;
+        }
+        rounded(ctx, body); ctx.fillStyle = rgba(C.leafWash, .55); ctx.fill(); ctx.strokeStyle = rgba(C.leaf, .9); ctx.lineWidth = 1.2; ctx.stroke();
+        if (c.h2 < .45){ ctx.beginPath(); ctx.arc(c.p[0] + (c.h - .5) * 8, c.p[1] + (c.h2 - .2) * 8, 4.2, 0, 6.283); ctx.fillStyle = rgba(C.ink, .28); ctx.fill(); }
+        var ring = shrink(c.poly, c.p, .74), dir = c.h > .5 ? 1 : -1, n = 7 + Math.floor(c.h2 * 4);
+        for (var q = 0; q < n; q++){ var pt = along(ring, q / n + dir * t * .025 + c.h);
+          ctx.beginPath(); ctx.ellipse(pt[0], pt[1], 3.4, 2.2, pt[2], 0, 6.283); ctx.fillStyle = rgba(C.leaf, .95); ctx.fill(); }
+      });
+    },
+    petal: function(ctx, cx, cy, R, t, C, px, py){
+      var s = 26; ctx.fillStyle = rgba(C.rose, .35); ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+      each(cx, cy, R, s, function(i, j){
+        var c = vcell(i, j, s, .4, 2), body = shrink(c.poly, c.p, .9);
+        var g = ctx.createRadialGradient(c.p[0] - 3, c.p[1] - 3, 1, c.p[0], c.p[1], s * .62);
+        g.addColorStop(0, rgba(GLINT, .9)); g.addColorStop(.35, rgba(C.roseWash, .95)); g.addColorStop(1, rgba(C.rose, .55));
+        rounded(ctx, body); ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = rgba(C.rose, .8); ctx.lineWidth = 1; ctx.stroke();
+        // each cell is a little cone; its highlight slides as you move, like light on velvet
+        var hx = c.p[0] - px * 4, hy = c.p[1] - py * 4 + Math.sin(t * .8 + c.h * 6) * .6;
+        ctx.beginPath(); ctx.arc(hx, hy, 2.2, 0, 6.283); ctx.fillStyle = rgba(GLINT, .9); ctx.fill();
+      });
+    },
+    stem: function(ctx, cx, cy, R, t, C){
+      var w = 24, L = 84; ctx.fillStyle = rgba(C.leaf, .35); ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+      for (var col = Math.floor((cx - R) / w) - 1; col <= Math.floor((cx + R) / w) + 1; col++){
+        var x = col * w;
+        if (((col % 6) + 6) % 6 === 0){ // a xylem vessel with spiral thickening and water moving up
+          ctx.fillStyle = rgba(C.sheet, .9); ctx.fillRect(x + 2, cy - R, w - 4, 2 * R);
+          ctx.strokeStyle = rgba(C.ink, .45); ctx.lineWidth = 1.3; ctx.beginPath();
+          for (var y = Math.floor((cy - R) / 7) * 7 - 14; y < cy + R + 14; y += 7){ ctx.moveTo(x + 3, y + 6); ctx.lineTo(x + w - 3, y); }
+          ctx.stroke();
+          ctx.strokeStyle = rgba(C.leaf, .9); ctx.lineWidth = 1.4; ctx.strokeRect(x + 2, cy - R - 2, w - 4, 2 * R + 4);
+          for (var k = 0; k < 9; k++){ var yy = (((k * 37 - t * 42) % 333) + 333) % 333; var wy = cy - R + yy * (2 * R + 40) / 333 - 20;
+            ctx.beginPath(); ctx.arc(x + w / 2 + Math.sin(k * 2.1) * 4, wy, 2.4, 0, 6.283); ctx.fillStyle = rgba(C.ink, .35); ctx.fill(); }
+          continue;
+        }
+        var off = hash(col, 5, 3) * L;
+        for (var r = Math.floor((cy - R - off) / L) - 1; r <= Math.floor((cy + R - off) / L) + 1; r++){
+          var y0 = r * L + off, hh = hash(col, r, 4);
+          ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x + 2, y0 + 2, w - 4, L - 4, 7); else ctx.rect(x + 2, y0 + 2, w - 4, L - 4);
+          ctx.fillStyle = rgba(C.leafWash, .5 + hh * .2); ctx.fill(); ctx.strokeStyle = rgba(C.leaf, .85); ctx.lineWidth = 1.1; ctx.stroke();
+          if (hh < .4){ ctx.beginPath(); ctx.ellipse(x + w / 2, y0 + L * (.3 + hh), 3.4, 5.5, 0, 0, 6.283); ctx.fillStyle = rgba(C.ink, .25); ctx.fill(); }
+        }
+      }
+    },
+    hip: function(ctx, cx, cy, R, t, C){
+      var s = 58; ctx.fillStyle = rgba(C.rose, .45); ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+      each(cx, cy, R, s, function(i, j){
+        var c = vcell(i, j, s, .65, 4), body = shrink(c.poly, c.p, .93);
+        var g = ctx.createRadialGradient(c.p[0], c.p[1], 2, c.p[0], c.p[1], s * .7);
+        g.addColorStop(0, rgba(C.sheet, .85)); g.addColorStop(1, rgba(C.roseWash, .9));
+        rounded(ctx, body); ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = rgba(C.rose, .9); ctx.lineWidth = 1.3; ctx.stroke();
+        for (var k = 0; k < 16; k++){ // pigment granules, jiggling
+          var a = hash(i * 31 + k, j, 9) * 6.283, d = Math.sqrt(hash(i, j * 17 + k, 10)) * s * .3;
+          var gx = c.p[0] + Math.cos(a) * d + Math.sin(t * 2.3 + k) * 1.3, gy = c.p[1] + Math.sin(a) * d + Math.cos(t * 1.9 + k * 1.7) * 1.3;
+          ctx.beginPath(); ctx.arc(gx, gy, 2 + hash(k, i, 12) * 1.6, 0, 6.283); ctx.fillStyle = rgba(C.rose, .85); ctx.fill();
+        }
+      });
+    },
+    pollen: function(ctx, cx, cy, R, t, C){
+      var s = 52; ctx.fillStyle = rgba(C.tape, .5); ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+      each(cx, cy, R, s, function(i, j){
+        if (hash(i, j, 6) < .18) return;
+        var p = site(i, j, s, .7, 6), r = 15 + hash(j, i, 7) * 5, x = p[0] + Math.sin(t * .6 + i) * 1.5, y = p[1] + Math.cos(t * .5 + j) * 1.5, rot = hash(i, j, 8) * 6.283 + t * .05;
+        var g = ctx.createRadialGradient(x - r * .35, y - r * .35, 1, x, y, r);
+        g.addColorStop(0, rgba(GLINT, .95)); g.addColorStop(.55, rgba(C.tape, 1)); g.addColorStop(1, rgba(C.inkSoft, .55));
+        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = rgba(C.ink, .75); ctx.lineWidth = 1.2; ctx.stroke();
+        for (var k = 0; k < 22; k++){ // the grainy outer wall
+          var a = hash(i * 7 + k, j, 16) * 6.283, d = Math.sqrt(hash(i, j * 5 + k, 17)) * r * .82;
+          ctx.beginPath(); ctx.arc(x + Math.cos(a) * d, y + Math.sin(a) * d, .9, 0, 6.283); ctx.fillStyle = rgba(C.ink, .3); ctx.fill();
+        }
+        ctx.beginPath(); for (k = 0; k < 3; k++){ var b = rot + k * 2.094; ctx.moveTo(x + Math.cos(b) * r * .2, y + Math.sin(b) * r * .2); ctx.lineTo(x + Math.cos(b) * r * .9, y + Math.sin(b) * r * .9); }
+        ctx.strokeStyle = rgba(C.ink, .6); ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.stroke();
+      });
+    },
+    paper: function(ctx, cx, cy, R, t, C){
+      var s = 54; ctx.fillStyle = rgba(C.sheet, 1); ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+      each(cx, cy, R, s, function(i, j){
+        var p = site(i, j, s, .9, 5), a = hash(i, j, 13) * 3.1416, l = 70 + hash(j, i, 14) * 70, ux = Math.cos(a), uy = Math.sin(a), bend = (hash(i, j, 15) - .5) * 30;
+        ctx.beginPath(); ctx.moveTo(p[0] - ux * l, p[1] - uy * l); ctx.quadraticCurveTo(p[0] - uy * bend, p[1] + ux * bend, p[0] + ux * l, p[1] + uy * l);
+        ctx.strokeStyle = rgba(C.rule, .9); ctx.lineWidth = 7; ctx.stroke();
+        ctx.strokeStyle = rgba(C.inkSoft, .35); ctx.lineWidth = 1; ctx.stroke();
+      });
+    }
+  };
+
+  function parse(str){
+    str = String(str || "").trim();
+    var m = str.match(/^#([0-9a-f]{3,8})$/i);
+    if (m){ var h = m[1]; if (h.length === 3) h = h.replace(/./g, "$&$&"); var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+    m = str.match(/rgba?\(([^)]+)\)/); if (m){ var v = m[1].split(",").map(parseFloat); return [v[0]|0, v[1]|0, v[2]|0]; }
+    return [128, 128, 128];
+  }
+  function colours(){
+    var cs = getComputedStyle(document.documentElement), g = function(n){ return parse(cs.getPropertyValue(n)); };
+    return { ink: g("--ink"), inkSoft: g("--ink-soft"), leaf: g("--leaf"), leafWash: g("--leaf-wash"), rose: g("--rose"), roseWash: g("--rose-wash"), sheet: g("--sheet"), rule: g("--rule"), tape: g("--tape") };
+  }
+  return { TISSUES: TISSUES, draw: draw, colours: colours };
+})();
+
+function setupLoupe(){
+  var art = document.getElementById("art"), svg = document.getElementById("rose");
+  var hover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hint = document.getElementById("lensHint");
+  hint.textContent = hover ? "Move your mouse over the drawing to see its cells" : "Tap the drawing to see its cells";
+  hint.hidden = false;
+
+  var K = 6, D = 180, R = 90, dpr = Math.min(2, window.devicePixelRatio || 1);   // K: how far the cell view travels per pixel of movement
+  // the lens sits in a layer fixed to the screen, so the edge of the paper never cuts it off
+  var layer = document.createElement("div"); layer.className = "lens-layer"; layer.setAttribute("aria-hidden", "true");
+  var lp = document.createElement("div"); lp.className = "loupe";
+  var cv = document.createElement("canvas"); lp.appendChild(cv);
+  var cap = document.createElement("div"); cap.className = "lens-cap";
+  layer.appendChild(lp); layer.appendChild(cap); document.body.appendChild(layer);
+  // cur: this moment's cells; snap: what was showing when the tissue changed; mix: the two blended
+  var cur = document.createElement("canvas"), snap = document.createElement("canvas"), mix = document.createElement("canvas");
+  var ctx = cv.getContext("2d"), cctx = cur.getContext("2d"), sctx = snap.getContext("2d"), mctx = mix.getContext("2d");
+  function size(){
+    D = !hover && window.innerWidth < 480 ? 150 : 180; R = D / 2;
+    lp.style.width = lp.style.height = D + "px";
+    [cv, cur, snap, mix].forEach(function(c){ c.width = c.height = Math.round(D * dpr); });
+  }
+  size();
+  if (hover) art.classList.add("zoom");
+
+  var st = { on: false, drawn: false, tissue: null, fading: false, since: 0, wx: 0, wy: 0, nx: 0, ny: 0, last: null, touch: false, raf: 0, C: Cells.colours(), timer: 0 };
+  function tissueAt(x, y){
+    var els = document.elementsFromPoint(x, y);
+    for (var k = 0; k < els.length; k++){ var t = els[k].getAttribute && els[k].getAttribute("data-t"); if (t && svg.contains(els[k])) return t; }
+    return "paper";
+  }
+  function setTissue(t){
+    if (t === st.tissue) return;
+    st.tissue = t;
+    if (st.drawn && !reduce){ sctx.drawImage(mix, 0, 0); st.fading = true; st.since = performance.now(); }
+    else st.fading = false;
+    var info = Cells.TISSUES[t];
+    cap.innerHTML = "<b>" + info.name + "</b> · " + info.what + " · ×400";
+  }
+  function scaleBar(c, C){ // as on a real micrograph
+    var y = D - 36;
+    c.beginPath(); if (c.roundRect) c.roundRect(R - 27, y, 54, 25, 5); else c.rect(R - 27, y, 54, 25);
+    c.fillStyle = "rgba(" + C.sheet.join(",") + ",.85)"; c.fill();
+    c.fillStyle = "rgba(" + C.ink.join(",") + ",.9)"; c.fillRect(R - 12, y + 5, 24, 3);
+    c.font = "10px 'Courier Prime', 'Courier New', monospace"; c.textAlign = "center"; c.fillText("20 µm", R, y + 20);
+  }
+  function frame(now){
+    var C = st.C, full = cv.width;
+    cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cctx.fillStyle = "rgb(" + C.sheet.join(",") + ")"; cctx.fillRect(0, 0, D, D);
+    cctx.save(); cctx.translate(R - st.wx, R - st.wy);
+    Cells.draw[st.tissue](cctx, st.wx, st.wy, R + 4, reduce ? 0 : now / 1000, C, st.nx, st.ny);
+    cctx.restore();
+    var fade = 1;
+    if (st.fading){ fade = Math.max(0, Math.min(1, (now - st.since) / 260)); if (fade >= 1) st.fading = false; }
+    mctx.globalAlpha = 1;
+    if (fade < 1){ mctx.drawImage(snap, 0, 0); mctx.globalAlpha = fade; }
+    mctx.drawImage(cur, 0, 0); mctx.globalAlpha = 1;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, full, full); ctx.drawImage(mix, 0, 0);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); scaleBar(ctx, C);
+    st.drawn = true;
+    if (st.on && !reduce) st.raf = requestAnimationFrame(frame);
+  }
+  // x, y: the pointer on screen. With a finger, the lens moves out from under it.
+  function place(x, y, touch){
+    var b = svg.getBoundingClientRect(), px = x - b.left, py = y - b.top;
+    st.wx = px * K; st.wy = py * K; st.nx = px / b.width - .5; st.ny = py / b.height - .5;
+    setTissue(tissueAt(x, y));
+    var vw = document.documentElement.clientWidth, vh = window.innerHeight, cw = cap.offsetWidth, ch = cap.offsetHeight, gap = 8;
+    var lx = x, ly = y, capAbove = false;
+    if (touch){
+      var lift = R + 26;
+      if (y - lift - R - gap - ch >= 8){ ly = y - lift; capAbove = true; }   // room above the finger
+      else {                                                                  // otherwise beside it, on the roomier side
+        lx = x + (x > vw / 2 ? -1 : 1) * (R + 30);
+        ly = Math.max(R + 8, Math.min(vh - R - gap - ch - 8, y));
+      }
+      lx = Math.max(R + 6, Math.min(vw - R - 6, lx));
+    }
+    lp.style.transform = "translate(" + (lx - R) + "px," + (ly - R) + "px)";
+    var top = capAbove ? ly - R - gap - ch : ly + R + gap;
+    if (!touch && top + ch > vh - 8) top = ly - R - gap - ch;                 // no room under the lens: label goes above
+    var left = Math.max(12, Math.min(lx - cw / 2, vw - cw - 12));
+    cap.style.transform = "translate(" + left + "px," + top + "px)";
+  }
+  function show(){
+    if (st.on) return;
+    st.on = true; st.C = Cells.colours(); lp.classList.add("on"); cap.classList.add("on");
+    if (reduce) frame(performance.now()); else st.raf = requestAnimationFrame(frame);
+  }
+  function hide(){
+    st.on = false; st.drawn = false; st.fading = false; st.last = null;
+    lp.classList.remove("on"); cap.classList.remove("on"); cancelAnimationFrame(st.raf); clearTimeout(st.timer);
+  }
+  function moved(e){ st.last = { x: e.clientX, y: e.clientY }; place(e.clientX, e.clientY, false); if (reduce && st.on) frame(performance.now()); }
+
+  if (hover){
+    svg.addEventListener("pointerenter", function(e){ moved(e); show(); });
+    svg.addEventListener("pointermove", moved);
+    svg.addEventListener("pointerleave", hide);
+    addEventListener("scroll", function(){
+      if (!st.on || !st.last) return;
+      var b = svg.getBoundingClientRect(), l = st.last;
+      if (l.x < b.left || l.x > b.right || l.y < b.top || l.y > b.bottom) hide();
+      else { place(l.x, l.y, false); if (reduce) frame(performance.now()); }
+    }, { passive: true });
+  } else {
+    svg.addEventListener("click", function(e){
+      clearTimeout(st.timer);
+      place(e.clientX, e.clientY, true); show(); if (reduce) frame(performance.now());
+      st.timer = setTimeout(hide, 3200);
+    });
+    addEventListener("scroll", function(){ if (st.on) hide(); }, { passive: true });
+  }
+  addEventListener("resize", function(){ hide(); size(); });
+  var mq = matchMedia("(prefers-color-scheme: dark)"), recolour = function(){ st.C = Cells.colours(); };
+  if (mq.addEventListener) mq.addEventListener("change", recolour);
+}
+
+SiteEngine.boot(render);
+</script>
+</body>
+</html>
