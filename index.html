@@ -46,7 +46,13 @@ h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0
 .top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px;flex-wrap:wrap}
 .mono{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:1.15rem;text-decoration:none;color:var(--ink)}
 .mono b{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--ink);border-radius:50%;font-weight:400;font-style:italic}
-.top nav{display:flex;gap:4px 18px;flex-wrap:wrap}
+.top nav{display:flex;gap:4px 18px;flex-wrap:wrap;align-items:center}
+.mode{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--ink-soft);background:var(--sheet);color:var(--ink);display:grid;place-items:center;padding:0;cursor:pointer;transition:background .2s,border-color .2s,transform .3s}
+@media (hover:hover){.mode:hover{border-color:var(--rose);color:var(--rose);transform:rotate(-20deg)}}
+.mode:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+.mode svg{width:17px;height:17px;display:block;grid-area:1/1}
+.mode .sun,.mode.is-dark .moon{display:none}
+.mode.is-dark .sun{display:block}
 .top nav a{font-family:var(--f-label);font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;padding:4px 0;border-bottom:1px solid transparent}
 .top nav a:hover{color:var(--ink);border-bottom-color:var(--rose)}
 
@@ -143,7 +149,7 @@ section{padding-block:clamp(56px,9vw,104px) 0}
 .patent p{margin:8px 0 0;color:var(--ink-soft);max-width:60ch}
 .stamp{font-family:var(--f-label);font-weight:700;color:var(--rose);border:3px double var(--rose);padding:10px 14px;text-align:center;transform:rotate(-8deg);letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;line-height:1.4;opacity:.85;mix-blend-mode:multiply}
 :root[data-theme="dark"] .stamp{mix-blend-mode:normal}
-@media (prefers-color-scheme: dark){ .stamp{mix-blend-mode:normal} }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .stamp{mix-blend-mode:normal} }
 
 /* path: vine timelines */
 .paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(24px,5vw,64px)}
@@ -161,6 +167,7 @@ section{padding-block:clamp(56px,9vw,104px) 0}
 .duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(24px,5vw,64px)}
 .ribbons{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
 .ribbons li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:center;background:var(--sheet);border:1px solid var(--rule);padding:12px 16px}
+.ribbons svg{width:44px;height:44px;display:block}
 .ribbons .t{font-family:var(--f-display);font-size:1.2rem;line-height:1.25}
 .ribbons .i{color:var(--ink-soft);font-size:.9rem}
 .langs{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
@@ -200,6 +207,10 @@ footer{font-family:var(--f-label);font-size:.75rem;color:var(--ink-soft);padding
 .draw .sway{transform-box:fill-box;transform-origin:0% 50%;transition:transform .8s cubic-bezier(.3,1.6,.4,1)}
 .art:hover .draw .sway{transform:rotate(-3deg)}
 
+@media (max-width:520px){
+  .ribbons li{grid-template-columns:36px minmax(0,1fr);gap:12px}
+  .ribbons svg{width:36px;height:36px}
+}
 @media (max-width:760px){
   .hero{grid-template-columns:1fr}
   .art svg{max-height:420px;margin:0 auto}
@@ -218,13 +229,16 @@ footer{font-family:var(--f-label);font-size:.75rem;color:var(--ink-soft);padding
   .sheet,.draw .sway{transition:none}
 }
 </style>
+<script>/* use the visitor's last choice of light or dark before anything is drawn */
+try { var tkTheme = localStorage.getItem("tk-theme"); if (tkTheme === "light" || tkTheme === "dark") document.documentElement.setAttribute("data-theme", tkTheme); } catch (e) {}
+</script>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <a class="mono" href="#top" id="mono"><b id="initials">T</b><span id="shortname"></span></a>
     <nav aria-label="Sections">
-      <a href="#about">About</a><a href="#research">Research</a><a href="#publications">Publications</a><a href="#path">Path</a><a href="#contact">Contact</a>
+      <a href="#about">About</a><a href="#research">Research</a><a href="#publications">Publications</a><a href="#path">Path</a><a href="#contact">Contact</a><button class="mode" id="modeBtn" type="button" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="moon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5 8.5 8.5 0 1 0 20.5 14.6z" fill="currentColor"/></svg><svg class="sun" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="12" cy="12" r="4.4" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg></button>
     </nav>
   </header>
 
@@ -707,6 +721,22 @@ window.SITE_BACKUP = {
 })();
 
 </script>
+<script>
+/* the round light / dark button next to Contact */
+(function(){
+  var root = document.documentElement, btn = document.getElementById("modeBtn"), mq = matchMedia("(prefers-color-scheme: dark)");
+  function dark(){ var t = root.getAttribute("data-theme"); return t ? t === "dark" : mq.matches; }
+  function label(){ var l = dark() ? "Switch to light mode" : "Switch to dark mode"; btn.setAttribute("aria-label", l); btn.title = l; btn.classList.toggle("is-dark", dark()); }
+  btn.addEventListener("click", function(){
+    var next = dark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("tk-theme", next); } catch (e) {}
+    label();
+  });
+  if (mq.addEventListener) mq.addEventListener("change", label);
+  label();
+})();
+</script>
 <script src="content.js"></script>
 <script>
 /* ---------- botanical drawing (generated, so it never needs editing) ---------- */
@@ -865,7 +895,7 @@ function render(S, E){
   var startYear = "";
   L(S.experience).concat(L(S.education)).forEach(function(x){ var m = String(x.dates||"").match(/\d{4}/); if (m && (!startYear || m[0] > startYear) && /now|present/i.test(x.dates||"")) startYear = m[0]; });
   document.getElementById("specno").textContent = "No. " + new Date().getFullYear();
-  var rows = [["Name", p.name], ["Field", p.title], ["Locality", p.location ? p.location + (/kitami/i.test(p.location) ? " · 43°48′N 143°54′E" : "") : ""], ["Det.", p.affiliation]];
+  var rows = [["Name", p.name], ["Field", p.title], ["Locality", p.location], ["Det.", p.affiliation]];
   document.getElementById("specdl").innerHTML = rows.filter(function(r){ return has(r[1]); }).map(function(r){ return "<dt>"+r[0]+"</dt><dd>"+md(r[1])+"</dd>"; }).join("");
   E.fill("#cv", has(p.cv) ? '<a class="btn" href="'+esc(p.cv)+'" target="_blank" rel="noopener">Download CV ↓</a>' : "");
 
@@ -912,7 +942,7 @@ function render(S, E){
   document.getElementById("path").hidden = !L(S.experience).length && !L(S.education).length;
 
   // awards + languages
-  var rosette = '<svg viewBox="0 0 44 44" aria-hidden="true"><g fill="var(--rose-wash)" stroke="var(--rose)" stroke-width="1.2">' +
+  var rosette = '<svg viewBox="0 0 44 44" width="44" height="44" aria-hidden="true"><g fill="var(--rose-wash)" stroke="var(--rose)" stroke-width="1.2">' +
     [0,1,2,3,4,5,6,7].map(function(i){ return '<ellipse cx="22" cy="12" rx="5" ry="9" transform="rotate('+(i*45)+' 22 22)"/>'; }).join("") +
     '</g><circle cx="22" cy="22" r="6" fill="var(--sheet)" stroke="var(--rose)" stroke-width="1.2"/></svg>';
   E.fill("#awards", L(S.awards).map(function(x){
@@ -1225,6 +1255,7 @@ function setupLoupe(){
   addEventListener("resize", function(){ hide(); size(); });
   var mq = matchMedia("(prefers-color-scheme: dark)"), recolour = function(){ st.C = Cells.colours(); };
   if (mq.addEventListener) mq.addEventListener("change", recolour);
+  new MutationObserver(recolour).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 }
 
 SiteEngine.boot(render);
