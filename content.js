@@ -74,6 +74,9 @@ window.SITE = {
   },
 
   /* ---------- Research themes ---------- */
+  // The drawing above each topic is chosen from its words: a topic that
+  // mentions fennel gets the fennel plate, rose gets the rose plate, and
+  // Mongolian gets the Mongolian medicine plate.
   research: [
     {
       title: "Plant extracts & the immune response",
@@ -91,6 +94,40 @@ window.SITE = {
       tag: "2020 to 2021",
     },
   ],
+
+  /* ---------- Current study (the moving diagram under Research) ---------- */
+  // The diagram is drawn by the page, redrawn from her slide "Mechanism of
+  // mast cell release of chemical mediators". Here you change the words
+  // around it. Keep the seven steps in this order: each one matches a part
+  // of the animation. The "fennel" steps show when the visitor presses the
+  // second button. To hide the whole diagram, write  steps: [],
+  study: {
+    title: "How a mast cell releases its chemical mediators",
+    intro: "What happens inside a mast cell during an allergic reaction, and where fennel seed extract steps in. Press a step to jump to it.",
+    label: "Allergic reaction",
+    steps: [
+      { title: "Antigen meets IgE", text: "An allergen (the antigen) links two IgE antibodies that sit on FcεRI receptors on the cell surface." },
+      { title: "Syk and PLCγ switch on", text: "The linked receptors switch on Syk, which switches on PLCγ. The yellow P is a phosphate tag, the cell's on switch." },
+      { title: "PIP2 splits in two", text: "PLCγ cuts PIP2 in the cell membrane into two messengers, IP3 and DAG." },
+      { title: "Calcium floods in", text: "IP3 opens the cell's calcium store, so Ca²⁺ rises inside the cell. DAG switches on PKC." },
+      { title: "Granules release", text: "Ca²⁺ and PKC make the granules fuse with the cell surface and release histamine and β-hexosaminidase." },
+      { title: "Leukotrienes are made", text: "Ca²⁺ also switches on cPLA2, which frees arachidonic acid (AA). 5-LOX turns it into LTA4 and then LTB4, a leukotriene." },
+      { title: "The allergy you feel", text: "Together these chemical mediators cause mucus secretion and smooth muscle contraction, the symptoms of an allergy." },
+    ],
+    fennel: {
+      label: "With fennel seed extract",
+      steps: [
+        { title: "Same allergen, treated cells", text: "This time the cells were given fennel seed extract (FSE) before the allergen arrived." },
+        { title: "A weaker switch", text: "FSE reduced the phosphorylation (switching on) of Syk and PLCγ." },
+        { title: "PIP2 splits in two", text: "The signal still passes through IP3 and DAG." },
+        { title: "Less calcium", text: "FSE lowered the rise of Ca²⁺ inside the cell and reduced the phosphorylation of PKC." },
+        { title: "Fewer mediators released", text: "Less histamine and β-hexosaminidase came out of the cells." },
+        { title: "Less leukotriene", text: "FSE lowered 5-LOX gene expression and the production of LTB4." },
+        { title: "The active compounds", text: "Quercetin was the main contributor, with kaempferol and luteolin adding to the anti-allergic effect." },
+      ],
+    },
+    credit: "",                      // a small line under the diagram. "" hides it
+  },
 
   /* ---------- Lab skills (short labels) ---------- */
   skills: [

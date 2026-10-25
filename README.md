@@ -39,6 +39,12 @@ Keep the file name `photo.jpg` and the page picks it up automatically.
 
 A portrait picture, a bit taller than it is wide, fits best.
 
+## The moving diagram under Research
+
+The mast cell diagram is drawn by `index.html`. Its words are in `content.js` under `study`: the title, the seven steps, and the steps for the **With fennel seed extract** button. Keep the seven steps in the same order, because each one matches a part of the animation. To hide the diagram, write `steps: [],`.
+
+If the `content.js` on GitHub doesn't have a `study` part yet, the page uses the words built into `index.html`, so the diagram still shows. You only need the new `study` part if you want to change those words.
+
 ## If something goes wrong
 
 - **A red box at the top of the page** means `content.js` has a typo. Visitors still see the site, using a copy of the text built into the page. On the live site, the box tells you which line to look at. Check that line and the one above it, usually for a missing comma or quote.

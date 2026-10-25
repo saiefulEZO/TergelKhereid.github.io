@@ -12,7 +12,7 @@
 /* Layout: a herbarium cabinet. Each section is a mounted sheet; labels are typed specimen tags. */
 :root{
   --paper:#e9ede3; --sheet:#f8f9f3; --ink:#1e2a21; --ink-soft:#56634f; --rule:#c6cdbb;
-  --rose:#a8324c; --rose-wash:#e5a3b1; --leaf:#4e6a3b; --leaf-wash:#a9c091; --label:#fdfcf6; --tape:rgba(214,206,170,.7);
+  --rose:#a8324c; --rose-wash:#e5a3b1; --leaf:#4e6a3b; --leaf-wash:#a9c091; --label:#fdfcf6; --tape:rgba(214,206,170,.7); --gold:#cf9f2c; --earth:#6f4528; --violet:#5f4a8b; --violet-wash:#ddd3ec; --blue:#3d6a94; --blue-wash:#cfdeed;
   --f-display:"IM Fell English", "Iowan Old Style", Georgia, serif;
   --f-body:"Karla", "Segoe UI", system-ui, sans-serif;
   --f-label:"Courier Prime", "Courier New", ui-monospace, monospace;
@@ -21,11 +21,11 @@
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --paper:#111813; --sheet:#18211b; --ink:#e4e9db; --ink-soft:#9eab95; --rule:#2f3b31;
-  --rose:#ea8199; --rose-wash:#7d3446; --leaf:#9cbf82; --leaf-wash:#3d5530; --label:#1e2921; --tape:rgba(120,116,90,.45);
+  --rose:#ea8199; --rose-wash:#7d3446; --leaf:#9cbf82; --leaf-wash:#3d5530; --label:#1e2921; --tape:rgba(120,116,90,.45); --gold:#c9a548; --earth:#b9875f; --violet:#b9a4de; --violet-wash:#382f4d; --blue:#8db3d9; --blue-wash:#243a4f;
   --shadow:0 1px 0 rgba(0,0,0,.2), 0 14px 34px -18px rgba(0,0,0,.8); color-scheme:dark; } }
 :root[data-theme="dark"]{
   --paper:#111813; --sheet:#18211b; --ink:#e4e9db; --ink-soft:#9eab95; --rule:#2f3b31;
-  --rose:#ea8199; --rose-wash:#7d3446; --leaf:#9cbf82; --leaf-wash:#3d5530; --label:#1e2921; --tape:rgba(120,116,90,.45);
+  --rose:#ea8199; --rose-wash:#7d3446; --leaf:#9cbf82; --leaf-wash:#3d5530; --label:#1e2921; --tape:rgba(120,116,90,.45); --gold:#c9a548; --earth:#b9875f; --violet:#b9a4de; --violet-wash:#382f4d; --blue:#8db3d9; --blue-wash:#243a4f;
   --shadow:0 1px 0 rgba(0,0,0,.2), 0 14px 34px -18px rgba(0,0,0,.8); color-scheme:dark; }
 
 [hidden]{display:none!important}
@@ -128,6 +128,103 @@ section{padding-block:clamp(56px,9vw,104px) 0}
 .sheet p{margin:0;color:var(--ink-soft)}
 .sheet .tag{font-size:.74rem;padding:8px 10px;align-self:flex-end;margin-top:auto;box-shadow:2px 2px 0 var(--rule)}
 
+/* current study: her mast cell figure, redrawn so it moves */
+.study{margin:0 0 clamp(40px,6vw,72px);background:var(--sheet);border:1px solid var(--rule);box-shadow:var(--shadow);padding:clamp(18px,3.5vw,40px);position:relative}
+.study::before{content:"";position:absolute;width:90px;height:26px;background:var(--tape);top:-12px;left:42px;transform:rotate(-3deg)}
+.study-head{max-width:70ch;margin-bottom:clamp(14px,2.5vw,24px)}
+.study-head h3{font-size:clamp(1.65rem,3.4vw,2.4rem);line-height:1.1;margin-top:6px}
+.study-head p{margin:10px 0 0;color:var(--ink-soft)}
+.study-body{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(18px,3.5vw,44px);align-items:start}
+.study-fig{min-width:0}
+.dg{display:block;width:100%;height:auto;max-width:640px;margin:0 auto}
+.study-ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-top:10px}
+.study .btn{padding:8px 14px;font-size:.78rem}
+.study .btn svg{width:12px;height:12px;display:block}
+.play .i-play,.play.is-paused .i-pause{display:none}
+.play.is-paused .i-play{display:block}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--ink)}
+.seg button{font-family:var(--f-label);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;padding:8px 12px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.seg button+button{border-left:1px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.seg button:focus-visible,.study .btn:focus-visible{outline:2px dashed var(--rose);outline-offset:2px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.steps button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;width:100%;padding:9px 12px 10px 10px;border-left:3px solid transparent;cursor:pointer;transition:background .3s,border-color .3s}
+.steps button:hover{background:color-mix(in srgb,var(--label) 70%,transparent)}
+.steps button:focus-visible{outline:2px dashed var(--rose);outline-offset:-2px}
+.steps .n{font-family:var(--f-label);color:var(--ink-soft);font-size:.8rem;padding-top:4px}
+.steps b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.2rem;line-height:1.2}
+.steps .tx{display:block;color:var(--ink-soft);font-size:.95rem;line-height:1.45;margin-top:3px}
+.steps [aria-current="step"]{background:var(--label);border-left-color:var(--rose);box-shadow:2px 2px 0 var(--rule)}
+.steps [aria-current="step"] .n{color:var(--rose)}
+.study figcaption{font-family:var(--f-display);font-style:italic;color:var(--ink-soft);margin-top:18px;font-size:.95rem}
+@media (min-width:861px){.study-fig{position:sticky;top:16px}}
+@media (max-width:860px){
+  .study-body{grid-template-columns:1fr}
+  .steps .tx{display:none}
+  .steps [aria-current="step"] .tx{display:block}
+}
+@media (max-width:520px){
+  .study-fig{margin:0 -12px}
+  .study-ctl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;padding:0 12px}
+  .seg{display:grid;grid-template-columns:1fr 1fr}
+  .seg button{padding:7px 8px;line-height:1.25}
+  .study .btn{justify-content:center}
+  .dg .nd-t{font-size:17px}
+  .dg .nd-t.sm{font-size:14px}
+  .dg .lb{font-size:18.5px}
+  .dg .lb.mdl{font-size:17px}
+  .dg .cap{font-size:25px}
+  .dg .fse-n{font-size:17px}
+}
+.dg text{stroke:none}
+.dg .cell{fill:var(--violet-wash);opacity:.6}
+.dg .mem{fill:none;stroke:var(--violet);stroke-width:2.4}
+.dg .nuc{fill:var(--rule);opacity:.55}
+.dg .nuc-env{fill:none;stroke:var(--blue);stroke-width:1.6;stroke-dasharray:14 5;opacity:.6}
+.dg .nuc-env.in{stroke-width:1;opacity:.35}
+.dg .er{fill:var(--sheet);stroke:var(--blue);stroke-width:1.3}
+.dg .gran{fill:var(--sheet);fill-opacity:.92;stroke:var(--blue);stroke-width:1.8}
+.dg .md{fill:var(--violet)}
+.dg .md.lt{fill-opacity:.45}
+.dg .ca{fill:var(--leaf)}
+.dg .ar-base{fill:none;stroke:var(--ink-soft);stroke-width:1.2;stroke-dasharray:2 3.5;stroke-linecap:round;opacity:.45}
+.dg .ar-base.hd{stroke-dasharray:none}
+.dg .ar{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.dg .ar.wide{stroke:var(--blue);stroke-width:9;stroke-linecap:butt;stroke-opacity:.6}
+.dg .ar.hd.wide{fill:var(--blue);fill-opacity:.6;stroke:none}
+.dg .nd-bg{fill:var(--sheet)}
+.dg .nd-lit{opacity:0}
+.dg .nd-base.blue{fill:var(--blue-wash);fill-opacity:.55}.dg .nd-lit.blue{fill:var(--blue-wash)}.dg .nd-line.blue{fill:none;stroke:var(--blue);stroke-width:1.4}
+.dg .nd-base.gold{fill:var(--gold);fill-opacity:.3}.dg .nd-lit.gold{fill:var(--gold);fill-opacity:.85}.dg .nd-line.gold{fill:none;stroke:var(--earth);stroke-width:1.2;stroke-opacity:.7}
+.dg .nd-base.beige{fill:var(--gold);fill-opacity:.12}.dg .nd-lit.beige{fill:var(--gold);fill-opacity:.42}.dg .nd-line.beige{fill:none;stroke:var(--gold);stroke-width:1.4}
+.dg .nd-base.plain{fill:var(--sheet)}.dg .nd-lit.plain{fill:var(--blue-wash)}.dg .nd-line.plain{fill:none;stroke:var(--blue);stroke-width:1.4}
+.dg .nd-t{font:500 15px/1 var(--f-body);fill:var(--ink)}
+.dg .nd-t.sm{font-size:12.5px}
+.dg .pb{fill:var(--gold);stroke:#6b5210;stroke-width:.8}
+.dg .pb-t{font:700 10px/1 var(--f-body);fill:#1d1606}
+.dg .lb{font:400 16px/1 var(--f-body);fill:var(--ink)}
+.dg .lt-l{fill:var(--rose);font-weight:700}
+.dg .cap{font:italic 22px/1 var(--f-display);fill:var(--ink)}
+.dg .rc{fill:none;stroke:var(--blue);stroke-linecap:round;stroke-linejoin:round}
+.dg .rc.g,.dg .rc.a{stroke-width:4}
+.dg .rc.b{stroke-width:3}
+.dg .rc-d{fill:var(--blue);fill-opacity:.75;stroke:var(--blue);stroke-width:1}
+.dg .ige{fill:none;stroke:var(--ink);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.dg .ige-in{fill:none;stroke:var(--sheet);stroke-width:1.3}
+.dg .ige-l{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round}
+.dg .ring{fill:none;stroke:var(--rose);stroke-width:2;opacity:0}
+.dg .antigen{fill:var(--rose)}
+.dg .antigen-hi{fill:#fff;opacity:.3}
+.dg .ltp{fill:var(--gold);stroke:var(--earth);stroke-width:.8;opacity:0}
+.dg .dn path{fill:var(--rose)}
+.dg .fse{opacity:0;transition:opacity .4s}
+.dg.fen .fse{opacity:1}
+.dg .fse-box{fill:var(--label);stroke:var(--ink);stroke-width:1}
+.dg .fse-k{font:700 9.5px/1 var(--f-label);letter-spacing:.08em;fill:var(--ink-soft)}
+.dg .fse-n{font:italic 15px/1 var(--f-display);fill:var(--ink)}
+.dg .fse-st{fill:none;stroke:var(--leaf);stroke-width:1}
+.dg .fse-fl{fill:var(--gold)}
+
 /* publications */
 .acc{border-top:1px solid var(--ink)}
 .acc details{border-bottom:1px solid var(--rule)}
@@ -200,6 +297,22 @@ footer{font-family:var(--f-label);font-size:.75rem;color:var(--ink-soft);padding
 .draw .wash-rose{fill:var(--rose-wash);stroke:none;opacity:.75}
 .draw .wash-hip{fill:var(--rose);stroke:none;opacity:.55}
 .draw .anther{fill:var(--ink);stroke:none}
+.draw .fine{stroke-width:.85}
+.draw .lf{stroke:var(--leaf)}
+.draw .orn{stroke:var(--rose);stroke-width:1.1}
+.draw .dash{stroke-dasharray:3 3;stroke:var(--ink-soft)}
+.draw .wash-gold{fill:var(--gold);stroke:none;opacity:.42}
+.draw .wash-blood{fill:var(--rose);stroke:none;opacity:.8}
+.draw .wash-serum{fill:var(--gold);stroke:none;opacity:.55}
+.draw .wash-paper{fill:var(--label);stroke:var(--rule)}
+.draw .bud-gold{fill:var(--gold);stroke:var(--ink);stroke-width:.5}
+.draw .dot-rose{fill:var(--rose);stroke:none}
+.draw .dot-ink{fill:var(--ink-soft);stroke:none;opacity:.45}
+.draw .pill{fill:var(--earth);stroke:var(--ink);stroke-width:.7}
+.draw .glint{fill:var(--sheet);stroke:none;opacity:.8}
+.draw text{stroke:none}
+.draw .plabel{font-family:var(--f-display);font-style:italic;font-size:11px;fill:var(--ink-soft)}
+.draw .mong{font-family:"Noto Sans Mongolian","Mongolian Baiti",serif;font-size:15px;fill:var(--rose)}
 .draw.animate .ln{stroke-dasharray:1;stroke-dashoffset:1;animation:ink 1.4s cubic-bezier(.6,.1,.3,1) forwards}
 .draw.animate .wash-leaf,.draw.animate .wash-rose,.draw.animate .wash-hip,.draw.animate .anther{opacity:0;animation:wash 1.2s ease forwards}
 @keyframes ink{to{stroke-dashoffset:0}}
@@ -226,7 +339,7 @@ footer{font-family:var(--f-label);font-size:.75rem;color:var(--ink-soft);padding
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .draw.animate .ln,.draw.animate .wash-leaf,.draw.animate .wash-rose,.draw.animate .wash-hip,.draw.animate .anther{animation:none;stroke-dashoffset:0;opacity:var(--o,.6)}
-  .sheet,.draw .sway{transition:none}
+  .sheet,.draw .sway,.steps button,.dg .fse{transition:none}
 }
 </style>
 <script>/* use the visitor's last choice of light or dark before anything is drawn */
@@ -275,6 +388,20 @@ try { var tkTheme = localStorage.getItem("tk-theme"); if (tkTheme === "light" ||
 
     <section id="research">
       <div class="sec-head"><h2>Research</h2><span class="lbl">Three collections</span></div>
+      <figure class="study" id="study" hidden>
+        <div class="study-head"><span class="lbl">Current study</span><h3 id="studyTitle"></h3><p id="studyIntro"></p></div>
+        <div class="study-body">
+          <div class="study-fig">
+            <svg class="dg" id="dg" viewBox="0 0 600 560" width="600" height="560" role="img"></svg>
+            <div class="study-ctl">
+              <button class="btn play" type="button" aria-pressed="false"><svg class="i-pause" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 1.5h2.4v9H2.5zM7.1 1.5h2.4v9H7.1z" fill="currentColor"/></svg><svg class="i-play" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3 1.2 10.5 6 3 10.8z" fill="currentColor"/></svg><span class="pl-t">Pause</span></button>
+              <div class="seg" role="group" aria-label="What the diagram shows"><button type="button" aria-pressed="true"></button><button type="button" aria-pressed="false"></button></div>
+            </div>
+          </div>
+          <ol class="steps" id="dgSteps"></ol>
+        </div>
+        <figcaption id="studyCredit"></figcaption>
+      </figure>
       <div class="sheets" id="sheets"></div>
     </section>
 
@@ -337,6 +464,9 @@ window.SITE_BACKUP = {
   },
 
   /* ---------- Research themes ---------- */
+  // The drawing above each topic is chosen from its words: a topic that
+  // mentions fennel gets the fennel plate, rose gets the rose plate, and
+  // Mongolian gets the Mongolian medicine plate.
   research: [
     {
       title: "Plant extracts & the immune response",
@@ -354,6 +484,40 @@ window.SITE_BACKUP = {
       tag: "2020 to 2021",
     },
   ],
+
+  /* ---------- Current study (the moving diagram under Research) ---------- */
+  // The diagram is drawn by the page, redrawn from her slide "Mechanism of
+  // mast cell release of chemical mediators". Here you change the words
+  // around it. Keep the seven steps in this order: each one matches a part
+  // of the animation. The "fennel" steps show when the visitor presses the
+  // second button. To hide the whole diagram, write  steps: [],
+  study: {
+    title: "How a mast cell releases its chemical mediators",
+    intro: "What happens inside a mast cell during an allergic reaction, and where fennel seed extract steps in. Press a step to jump to it.",
+    label: "Allergic reaction",
+    steps: [
+      { title: "Antigen meets IgE", text: "An allergen (the antigen) links two IgE antibodies that sit on FcεRI receptors on the cell surface." },
+      { title: "Syk and PLCγ switch on", text: "The linked receptors switch on Syk, which switches on PLCγ. The yellow P is a phosphate tag, the cell's on switch." },
+      { title: "PIP2 splits in two", text: "PLCγ cuts PIP2 in the cell membrane into two messengers, IP3 and DAG." },
+      { title: "Calcium floods in", text: "IP3 opens the cell's calcium store, so Ca²⁺ rises inside the cell. DAG switches on PKC." },
+      { title: "Granules release", text: "Ca²⁺ and PKC make the granules fuse with the cell surface and release histamine and β-hexosaminidase." },
+      { title: "Leukotrienes are made", text: "Ca²⁺ also switches on cPLA2, which frees arachidonic acid (AA). 5-LOX turns it into LTA4 and then LTB4, a leukotriene." },
+      { title: "The allergy you feel", text: "Together these chemical mediators cause mucus secretion and smooth muscle contraction, the symptoms of an allergy." },
+    ],
+    fennel: {
+      label: "With fennel seed extract",
+      steps: [
+        { title: "Same allergen, treated cells", text: "This time the cells were given fennel seed extract (FSE) before the allergen arrived." },
+        { title: "A weaker switch", text: "FSE reduced the phosphorylation (switching on) of Syk and PLCγ." },
+        { title: "PIP2 splits in two", text: "The signal still passes through IP3 and DAG." },
+        { title: "Less calcium", text: "FSE lowered the rise of Ca²⁺ inside the cell and reduced the phosphorylation of PKC." },
+        { title: "Fewer mediators released", text: "Less histamine and β-hexosaminidase came out of the cells." },
+        { title: "Less leukotriene", text: "FSE lowered 5-LOX gene expression and the production of LTB4." },
+        { title: "The active compounds", text: "Quercetin was the main contributor, with kaempferol and luteolin adding to the anti-allergic effect." },
+      ],
+    },
+    credit: "",                      // a small line under the diagram. "" hides it
+  },
 
   /* ---------- Lab skills (short labels) ---------- */
   skills: [
@@ -876,7 +1040,456 @@ var Bot = (function(){
       petal(svg,P(90,60),-.4,26,.6); petal(svg,P(232,120),2.2,24,.7);
     }
   }
-  return { rose: rose, sprig: sprig };
+  /* ---------- research plates: one drawing per topic ---------- */
+  function txt(svg, x, y, str, cls, extra){
+    var t = el(svg, "text", Object.assign({x:x, y:y}, extra || {}), cls); t.textContent = str; return t;
+  }
+  function feather(svg, p, ang, len, depth){            // fennel's thread-like leaves
+    var d = P(Math.cos(ang), Math.sin(ang)), n = P(-d.y, d.x), q = add(p, d, len);
+    el(svg,"path",{d:"M"+f(p)+" Q"+f(add(add(p,d,len*.5),n,len*.07))+" "+f(q)},"ln lf fine");
+    if (depth > 0) for (var k=1;k<=3;k++){ var at = add(p,d,len*k/3.3); feather(svg, at, ang-.62, len*.42, depth-1); feather(svg, at, ang+.62, len*.42, depth-1); }
+  }
+  function umbel(svg, c, R, rays){                       // fennel's umbrella of tiny yellow flowers
+    for (var i=0;i<rays;i++){
+      var u = i/(rays-1)-.5, a = -Math.PI/2 + u*2.15, tip = add(c, P(Math.cos(a),Math.sin(a)), R*(.86+.14*Math.cos(u*3)));
+      el(svg,"path",{d:"M"+f(c)+" L"+f(tip)},"ln fine");
+      for (var j=0;j<5;j++){ var b = -Math.PI/2 + (j/4-.5)*2.1, t2 = add(tip, P(Math.cos(b),Math.sin(b)), R*.2);
+        el(svg,"path",{d:"M"+f(tip)+" L"+f(t2)},"ln fine"); el(svg,"circle",{cx:t2.x.toFixed(1), cy:t2.y.toFixed(1), r:1.8},"bud-gold"); }
+    }
+  }
+  function seed(svg, c, ang){                            // a ribbed fennel seed
+    var g = el(svg,"g",{transform:"translate("+f(c)+") rotate("+(ang*57.3).toFixed(1)+")"});
+    var saved = svg.__g; svg.__g = g;
+    el(svg,"ellipse",{cx:0,cy:0,rx:11,ry:3.8},"wash-leaf"); el(svg,"ellipse",{cx:0,cy:0,rx:11,ry:3.8},"ln fine");
+    el(svg,"path",{d:"M-8 -1.6 Q0 -2.4 8 -1.6 M-9.5 0 L9.5 0 M-8 1.6 Q0 2.4 8 1.6"},"ln fine");
+    el(svg,"path",{d:"M11 0 l3 -1.2"},"ln fine");
+    svg.__g = saved;
+  }
+  function ulzii(svg, cx, cy, size){                     // the endless knot, a Mongolian ornament
+    var u = size/8, d = "";
+    [-3,-1,1,3].forEach(function(k){ d += "M"+(-4*u)+" "+(k*u)+" L"+(4*u)+" "+(k*u)+" M"+(k*u)+" "+(-4*u)+" L"+(k*u)+" "+(4*u)+" "; });
+    [[-3,-1],[1,3]].forEach(function(pr){
+      var a = pr[0]*u, b = pr[1]*u;
+      d += "M"+(-4*u)+" "+a+" A"+u+" "+u+" 0 0 0 "+(-4*u)+" "+b+" ";     // left loops
+      d += "M"+(4*u)+" "+a+" A"+u+" "+u+" 0 0 1 "+(4*u)+" "+b+" ";       // right loops
+      d += "M"+a+" "+(-4*u)+" A"+u+" "+u+" 0 0 1 "+b+" "+(-4*u)+" ";     // top loops
+      d += "M"+a+" "+(4*u)+" A"+u+" "+u+" 0 0 0 "+b+" "+(4*u)+" ";       // bottom loops
+    });
+    el(svg,"path",{d:d, transform:"translate("+cx+" "+cy+") rotate(45)"},"ln orn");
+  }
+  function tube(svg, x, top, bottom, fill, split){
+    var r = 6.5, body = "M"+(x-r)+" "+top+" L"+(x-r)+" "+bottom+" A"+r+" "+r+" 0 0 0 "+(x+r)+" "+bottom+" L"+(x+r)+" "+top;
+    if (split){
+      el(svg,"path",{d:"M"+(x-r)+" "+split+" L"+(x-r)+" "+bottom+" A"+r+" "+r+" 0 0 0 "+(x+r)+" "+bottom+" L"+(x+r)+" "+split+"Z"},"wash-blood");
+      el(svg,"rect",{x:x-r, y:fill, width:2*r, height:split-fill},"wash-serum");
+    } else el(svg,"path",{d:"M"+(x-r)+" "+fill+" L"+(x-r)+" "+bottom+" A"+r+" "+r+" 0 0 0 "+(x+r)+" "+bottom+" L"+(x+r)+" "+fill+"Z"},"wash-blood");
+    el(svg,"path",{d:body},"ln"); el(svg,"path",{d:"M"+(x-r-2)+" "+top+" L"+(x+r+2)+" "+top},"ln");
+    el(svg,"path",{d:"M"+(x-r)+" "+fill+" L"+(x+r)+" "+fill},"ln fine");
+  }
+  function driedBud(svg, c, ang, s){                     // a dried rose bud, the way rose flowers are sold as medicine
+    var g = el(svg,"g",{transform:"translate("+f(c)+") rotate("+(ang*57.3).toFixed(1)+") scale("+s+")"});
+    var saved = svg.__g; svg.__g = g;
+    el(svg,"path",{d:"M0 0 C-7 -3 -7 -14 0 -20 C7 -14 7 -3 0 0Z"},"wash-rose"); el(svg,"path",{d:"M0 0 C-7 -3 -7 -14 0 -20 C7 -14 7 -3 0 0Z"},"ln fine");
+    el(svg,"path",{d:"M0 -20 C-3 -14 -3 -7 0 -2 M-4 -16 C-1 -12 1 -8 3 -5"},"ln fine");
+    el(svg,"path",{d:"M0 0 Q-8 -2 -9 -9 M0 0 Q8 -2 9 -9 M0 0 L0 4"},"ln lf fine");
+    svg.__g = saved;
+  }
+
+  var plates = {
+    fennel: function(svg){
+      // stalk, side branch, umbels
+      el(svg,"path",{d:"M118 156 C116 122 124 92 126 58"},"ln"); el(svg,"path",{d:"M121.5 156 C119.5 122 127.5 92 129 58"},"ln fine");
+      el(svg,"path",{d:"M122 108 Q140 92 160 86"},"ln");
+      umbel(svg, P(127.5,58), 32, 9); umbel(svg, P(160,86), 17, 6);
+      // feathery leaves
+      feather(svg, P(120,132), -2.55, 34, 2); feather(svg, P(121,122), -.5, 28, 2); feather(svg, P(119,146), -2.9, 26, 2);
+      el(svg,"path",{d:"M117 135 q3 -6 6 -5 M118 125 q3 -5 6 -4"},"ln fine");
+      // seeds, the part her extract comes from
+      seed(svg, P(206,136), -.35); seed(svg, P(232,142), .25); seed(svg, P(214,150), .05);
+      txt(svg, 168, 124, "Foeniculum vulgare", "plabel");
+      // under the lens: a mast cell, calmed by the extract
+      el(svg,"circle",{cx:252,cy:54,r:31},"wash-paper"); el(svg,"circle",{cx:252,cy:54,r:31},"ln dash");
+      el(svg,"circle",{cx:252,cy:54,r:18},"wash-rose"); el(svg,"circle",{cx:252,cy:54,r:18},"ln fine");
+      el(svg,"ellipse",{cx:249,cy:56,rx:6.5,ry:5,transform:"rotate(-20 249 56)"},"ln fine");
+      var R = rng(17);
+      for (var i=0;i<34;i++){ var a = R()*6.283, rr = 8.5 + R()*7.5; el(svg,"circle",{cx:(252+Math.cos(a)*rr).toFixed(1), cy:(54+Math.sin(a)*rr).toFixed(1), r:(1+R()*.6).toFixed(2)},"dot-rose"); }
+      [[271,40],[275,47],[268,33]].forEach(function(q){ el(svg,"circle",{cx:q[0],cy:q[1],r:1.2},"dot-rose"); });
+      txt(svg, 217, 28, "mast cell", "plabel", {"text-anchor":"end"});
+      el(svg,"path",{d:"M244 132 Q258 112 251 90"},"ln dash"); el(svg,"path",{d:"M247.5 95.5 L251 90 L255 95"},"ln fine");   // extract -> cell
+    },
+    mongolian: function(svg){
+      // a paper slip with "Mongol em" (Mongolian medicine) in traditional script
+      el(svg,"rect",{x:22, y:14, width:26, height:132},"wash-paper");
+      txt(svg, 0, 0, "ᠮᠣᠩᠭᠣᠯ ᠡᠮ", "mong", {transform:"translate(35 22) rotate(90)", "dominant-baseline":"central"});
+      // pestle, then the brass mortar with an endless-knot ornament and herbs inside
+      var s = P(152,92), e = P(188,44), d = P(.6,-.8), n = P(.8,.6);
+      var pest = "M"+f(add(s,n,3))+" L"+f(add(e,n,5))+" A5 5 0 0 0 "+f(add(e,n,-5))+" L"+f(add(s,n,-3))+"Z";
+      el(svg,"path",{d:pest},"wash-gold"); el(svg,"path",{d:pest},"ln");
+      leaf(svg, P(128,92), -1.95, 13, 1, 0); leaf(svg, P(146,91), -1.25, 12, 1, 0);
+      var body = "M102 92 C104 122 118 136 128 138 L152 138 C162 136 176 122 178 92";
+      el(svg,"path",{d:body+" A38 7 0 0 1 102 92Z"},"wash-gold");
+      el(svg,"ellipse",{cx:140,cy:92,rx:38,ry:7},"ln"); el(svg,"path",{d:body},"ln");
+      el(svg,"path",{d:"M126 138 L121 147 L159 147 L154 138"},"wash-gold"); el(svg,"path",{d:"M126 138 L121 147 L159 147 L154 138"},"ln");
+      ulzii(svg, 140, 116, 22);
+      // pills
+      [[78,149],[88,152],[84,143],[196,150],[206,146],[200,155]].forEach(function(q){ el(svg,"circle",{cx:q[0],cy:q[1],r:4.2},"pill"); el(svg,"circle",{cx:q[0]-1.3,cy:q[1]-1.4,r:1},"glint"); });
+      // measured: blood samples in a rack
+      el(svg,"path",{d:"M220 64 L276 64 M220 146 L276 146 M222 64 L222 146 M274 64 L274 146"},"ln fine");
+      tube(svg, 236, 28, 128, 70, 0); tube(svg, 260, 28, 128, 76, 104);
+      [84,96,108,120].forEach(function(y){ el(svg,"path",{d:"M229.5 "+y+" l4 0"},"ln fine"); });
+    },
+    rose: function(svg){
+      // a flowering Rosa rugosa
+      el(svg,"path",{d:"M92 156 Q86 120 96 72"},"ln");
+      leaf(svg, P(91,126), -2.6, 21, 2, 0); leaf(svg, P(93,104), -.45, 19, 2, 0);
+      flower(svg, P(96,50), 26, -.2, 0);
+      txt(svg, 128, 22, "Rosa rugosa", "plabel");
+      // dried buds from different regions, in a dish
+      el(svg,"ellipse",{cx:160,cy:148,rx:34,ry:6.5},"wash-paper"); el(svg,"ellipse",{cx:160,cy:148,rx:34,ry:6.5},"ln");
+      driedBud(svg, P(140,148), -.35, 1); driedBud(svg, P(158,150), .1, 1.1); driedBud(svg, P(177,147), .45, .95);
+      // measuring: a graduated cylinder of rose extract
+      el(svg,"path",{d:"M212 90 L212 138 L234 138 L234 90Z"},"wash-blood");
+      el(svg,"path",{d:"M212 26 L212 138 L234 138 L234 26 M208 24 L238 24 M206 146 L240 146 L240 138 L206 138Z"},"ln");
+      for (var y=40;y<=130;y+=10) el(svg,"path",{d:"M212 "+y+" l"+(y%20 ? 4 : 8)+" 0"},"ln fine");
+      el(svg,"path",{d:"M212 90 L234 90"},"ln fine");
+      // one of the active compounds: a galloyl ring
+      var cx = 268, cy = 66, r = 11, ring = "";
+      for (var i=0;i<6;i++){ var a = Math.PI/6 + i*Math.PI/3; ring += (i ? " L" : "M") + (cx+Math.cos(a)*r).toFixed(1)+" "+(cy+Math.sin(a)*r).toFixed(1); }
+      el(svg,"path",{d:ring+"Z"},"ln fine"); el(svg,"circle",{cx:cx,cy:cy,r:6.5},"ln fine");
+      [-150,-90,-30].forEach(function(deg){ var a = deg*Math.PI/180; el(svg,"path",{d:"M"+(cx+Math.cos(a)*r).toFixed(1)+" "+(cy+Math.sin(a)*r).toFixed(1)+" l"+(Math.cos(a)*7).toFixed(1)+" "+(Math.sin(a)*7).toFixed(1)},"ln fine"); });
+      el(svg,"path",{d:"M"+(cx).toFixed(1)+" "+(cy+r)+" l0 9 M"+(cx-3)+" "+(cy+r+9)+" l6 0"},"ln fine");
+    }
+  };
+  // pick the drawing that matches what each research topic is about
+  function plateFor(item, i){
+    var t = (String(item.title||"") + " " + String(item.text||"")).toLowerCase();
+    if (/fennel|foeniculum/.test(t)) return "fennel";
+    if (/\brose|rosa\b/.test(t)) return "rose";
+    if (/mongol/.test(t)) return "mongolian";
+    return String(i % 3);
+  }
+  function plate(svg, kind){
+    if (plates[kind]){ svg.innerHTML = ""; plates[kind](svg); }
+    else sprig(svg, +kind || 0);
+  }
+  return { rose: rose, sprig: sprig, plate: plate, plateFor: plateFor };
+})();
+
+/* ---------- current study: her mast cell figure, redrawn so it moves ---------- */
+var Study = (function(){
+  var NS = "http://www.w3.org/2000/svg", C = {x:285, y:300}, R = 182;
+  // when each of the seven steps starts (seconds); after END everything fades and the loop starts again
+  var T = [0, 2.4, 4.6, 6.6, 9.2, 12, 15, 18], LOOP = 18, END = 17.1;
+
+  function el(p, tag, a, cls){ var e = document.createElementNS(NS, tag); for (var k in a) e.setAttribute(k, a[k]); if (cls) e.setAttribute("class", cls); p.appendChild(e); return e; }
+  function txt(p, x, y, s, cls, a){ var e = el(p, "text", Object.assign({x:x, y:y}, a || {}), cls); e.textContent = s; return e; }
+  // text with a raised (Ca2+) or lowered (LTB4) ending
+  function txt2(p, x, y, main, end, up, cls, a){
+    var e = el(p, "text", Object.assign({x:x, y:y}, a || {}), cls);
+    e.appendChild(document.createTextNode(main));
+    var s = el(e, "tspan", {dy: up ? -6 : 4, "font-size": up ? "0.62em" : "0.7em"}); s.textContent = end;
+    return e;
+  }
+  function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function seg(t, a, b){ return clamp((t - a) / (b - a)); }
+  function ease(p){ return p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2; }
+  function out(p){ return 1 - Math.pow(1 - p, 3); }
+  function pop(t, a){ var p = seg(t, a, a + .4); return p <= 0 ? 0 : out(p) * (1 + .3 * Math.sin(Math.PI * p)); }
+  function rnd(i, k){ var s = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453; return s - Math.floor(s); }
+  function mv(e, x, y, s){ e.setAttribute("transform", "translate(" + x.toFixed(1) + " " + y.toFixed(1) + ")" + (s != null ? " scale(" + Math.max(s, .001).toFixed(3) + ")" : "")); }
+
+  // a protein or messenger: pill, round or hexagon, with its name
+  function node(p, n){
+    var g = el(p, "g", {}), r = el(g, "g", n.rot ? {transform: "rotate(" + n.rot + ")"} : {}), shape, a;
+    if (n.shape === "dot") a = {cx:0, cy:0, r:n.r};
+    else if (n.shape === "hex"){ var d = ""; for (var i = 0; i < 6; i++){ var an = Math.PI/6 + i*Math.PI/3; d += (i ? "L" : "M") + (Math.cos(an)*n.r).toFixed(1) + " " + (Math.sin(an)*n.r).toFixed(1); } a = {d: d + "Z"}; }
+    else a = {x:-n.w/2, y:-13, width:n.w, height:26, rx:13};
+    var tag = n.shape === "dot" ? "circle" : n.shape === "hex" ? "path" : "rect";
+    el(r, tag, a, "nd-bg");
+    el(r, tag, a, "nd-base " + n.tone);
+    shape = el(r, tag, a, "nd-lit " + n.tone);
+    el(r, tag, a, "nd-line " + n.tone);
+    if (n.end) txt2(r, 0, 0, n.label, n.end, false, "nd-t", {"text-anchor":"middle", "dominant-baseline":"central"});
+    else txt(r, 0, 0, n.label, "nd-t" + (n.small ? " sm" : ""), {"text-anchor":"middle", "dominant-baseline":"central"});
+    mv(g, n.x, n.y);
+    n.g = g; n.lit = shape;
+    if (n.p){ n.badge = el(g, "g", {}); el(n.badge, "circle", {cx:0, cy:0, r:8.5}, "pb"); txt(n.badge, 0, .5, "P", "pb-t", {"text-anchor":"middle", "dominant-baseline":"central"}); }
+    return n;
+  }
+  // a pencilled path that is inked in as the signal travels along it
+  function arrow(p, d, cls){
+    el(p, "path", {d:d}, "ar-base");
+    var ink = el(p, "path", {d:d}, "ar " + (cls || "")), L = ink.getTotalLength();
+    var e = ink.getPointAtLength(L), q = ink.getPointAtLength(Math.max(0, L - 4)), ang = Math.atan2(e.y - q.y, e.x - q.x) * 57.2958;
+    var tr = "translate(" + e.x.toFixed(1) + " " + e.y.toFixed(1) + ") rotate(" + ang.toFixed(1) + ")", hd = cls === "wide" ? "M-14 -11 L2 0 L-14 11Z" : "M-6.5 -4.2 L0 0 L-6.5 4.2";
+    el(p, "path", {d:hd, transform:tr}, "ar-base hd");
+    var head = el(p, "path", {d:hd, transform:tr}, "ar hd " + (cls || ""));
+    ink.style.strokeDasharray = L + " " + (L + 1);
+    return {ink:ink, head:head, L:L};
+  }
+  // the red "goes down" arrow from her summary slide
+  function down(p, x, y){ var g = el(p, "g", {}, "dn"); el(g, "path", {d:"M-2.4 -10 h4.8 v8 h4.4 l-6.8 9 l-6.8 -9 h4.4z"}); g._x = x; g._y = y; mv(g, x, y, 0); return g; }
+
+  function build(svg){
+    svg.innerHTML = "";
+    var m = 121, S = {nodes:{}, arrows:{}, ca:[], med:[], lt:[], dn:[]};
+
+    // cell, nucleus, the calcium store
+    el(svg, "circle", {cx:C.x, cy:C.y, r:R}, "cell");
+    el(svg, "circle", {cx:280, cy:394, r:52}, "nuc");
+    el(svg, "circle", {cx:280, cy:394, r:52}, "nuc-env");
+    el(svg, "circle", {cx:280, cy:394, r:47}, "nuc-env in");
+    var er = el(svg, "g", {});
+    for (var k = 0; k < 3; k++){
+      var w = 40 - k*6, y0 = 296 - k*9;
+      el(er, "path", {d:"M" + (C.x - w) + " " + y0 + " Q" + C.x + " " + (y0 - 22) + " " + (C.x + w) + " " + y0 + " Q" + C.x + " " + (y0 - 14) + " " + (C.x - w) + " " + y0 + "Z"}, "er");
+    }
+    S.er = er;
+    S.mem = el(svg, "circle", {cx:C.x, cy:C.y, r:R}, "mem");
+    S.memL = 2 * Math.PI * R;
+
+    // granules: one stays put, one moves to the surface and opens
+    S.gA = {x:404, y:362, r:27}; S.gB = {x:372, y:428, r:24}; S.gBf = {x:391, y:455};
+    S.gAel = el(svg, "g", {}); el(S.gAel, "circle", {cx:0, cy:0, r:S.gA.r}, "gran"); mv(S.gAel, S.gA.x, S.gA.y);
+    for (var i = 0; i < 13; i++){ var a1 = rnd(i, 1) * 6.283, r1 = 4 + rnd(i, 2) * 17; el(S.gAel, "circle", {cx:(Math.cos(a1)*r1).toFixed(1), cy:(Math.sin(a1)*r1).toFixed(1), r:3}, i % 3 ? "md" : "md lt"); }
+    S.gBel = el(svg, "g", {}); S.gBc = el(S.gBel, "circle", {cx:0, cy:0, r:S.gB.r}, "gran"); S.gBL = 2 * Math.PI * S.gB.r;
+    mv(S.gBel, S.gB.x, S.gB.y);
+
+    // pencilled pathways
+    var A = S.arrows, ag = el(svg, "g", {});
+    A.syk   = arrow(ag, "M258 175 Q262 200 282 205");
+    A.plc   = arrow(ag, "M348 194 Q356 172 370 165");
+    A.dag   = arrow(ag, "M405 185 Q415 196 418 211");
+    A.ip3   = arrow(ag, "M386 188 Q384 236 362 255");
+    A.er    = arrow(ag, "M332 268 Q326 274 320 280");
+    A.pkc   = arrow(ag, "M420 255 L420 281");
+    A.caA   = arrow(ag, "M268 270 Q264 256 258 247");
+    A.caB   = arrow(ag, "M318 296 Q328 302 336 307");
+    A.gA1   = arrow(ag, "M368 330 Q378 338 383 344");
+    A.gA2   = arrow(ag, "M420 313 Q421 324 416 334");
+    A.cpla  = arrow(ag, "M232 232 Q226 235 219 238");
+    A.aa    = arrow(ag, "M178 255 L168 275");
+    A.lta   = arrow(ag, "M178 296 C204 302 210 340 200 350");
+    A.ltb   = arrow(ag, "M176 372 L186 396");
+    A.exit  = arrow(ag, "M176 432 Q150 470 116 496", "wide");
+
+    // proteins and messengers, placed as in her figure
+    var N = S.nodes, ng = el(svg, "g", {});
+    N.syk  = node(ng, {x:262, y:160, w:50, label:"Syk", tone:"blue", p:true, bx:-30, by:-6});
+    N.plc  = node(ng, {x:322, y:205, w:62, label:"PLCγ", tone:"blue", p:true, bx:-36, by:-7});
+    N.pip2 = node(ng, {x:392, y:170, w:50, label:"PIP2", tone:"beige", rot:32});
+    N.dag  = node(ng, {x:420, y:233, r:22, shape:"hex", label:"DAG", tone:"blue"});
+    N.ip3  = node(ng, {x:346, y:262, r:16, shape:"dot", label:"IP3", tone:"gold", small:true});
+    N.pkc  = node(ng, {x:420, y:298, w:50, label:"PKC", tone:"blue", p:true, bx:-30, by:-7});
+    N.cpla = node(ng, {x:184, y:240, w:64, label:"cPLA2", tone:"blue"});
+    N.aa   = node(ng, {x:162, y:292, r:16, shape:"dot", label:"AA", tone:"gold", small:true});
+    N.lox  = node(ng, {x:246, y:330, w:60, label:"5-LOX", tone:"plain"});
+    N.lta  = node(ng, {x:170, y:358, w:54, label:"LTA", end:"4", tone:"beige"});
+    N.ltb  = node(ng, {x:196, y:410, w:54, label:"LTB", end:"4", tone:"beige"});
+
+    // calcium: bursts out of the store into two clouds
+    var cg = el(svg, "g", {});
+    var cloudA = [[-16,-6],[-6,-11],[5,-9],[15,-4],[-11,3],[0,0],[11,4],[-4,10],[7,11],[19,8],[-19,8],[-24,-1]];
+    var cloudB = [[-15,-7],[-4,-10],[7,-8],[16,-2],[-9,2],[2,1],[12,7],[-3,10],[8,13],[-15,10],[20,-11],[-21,-1]];
+    cloudA.forEach(function(o, i){ S.ca.push({e: el(cg, "circle", {r:3.4}, "ca"), sx:C.x - 8, sy:276, hx:248 + o[0], hy:232 + o[1], i:i}); });
+    cloudB.forEach(function(o, i){ S.ca.push({e: el(cg, "circle", {r:3.4}, "ca"), sx:C.x + 22, sy:288, hx:350 + o[0], hy:318 + o[1], i:i + 12}); });
+    S.caLabels = [txt2(svg, 222, 214, "Ca", "2+", true, "lb", {"text-anchor":"end"}), txt2(svg, 320, 354, "Ca", "2+", true, "lb")];
+
+    // histamine and β-hexosaminidase waiting inside the moving granule
+    var mg = el(svg, "g", {}), u = {x:.568, y:.823}, v = {x:-.823, y:.568};
+    for (var j = 0; j < 24; j++){
+      var a2 = rnd(j, 3) * 6.283, r2 = 3 + rnd(j, 4) * 15, d = 26 + rnd(j, 5) * 54, s = (rnd(j, 6) - .5) * 1.1 * d;
+      S.med.push({e: el(mg, "circle", {r:3.1}, j % 3 ? "md" : "md lt"), ox:Math.cos(a2)*r2, oy:Math.sin(a2)*r2,
+        tx:S.gBf.x + u.x*d + v.x*s, ty:S.gBf.y + u.y*d + v.y*s, dx:(rnd(j, 7) - .3) * 2.2, dy:(rnd(j, 8) - .3) * 2.2, j:j});
+    }
+
+    // leukotrienes leaving along the wide arrow
+    for (var l = 0; l < 3; l++) S.lt.push(el(svg, "ellipse", {rx:7, ry:4.2}, "ltp"));
+
+    // receptors, IgE and the antigen
+    var rg = el(svg, "g", {});
+    [250, 320].forEach(function(x0){
+      el(rg, "path", {d:"M" + (x0 - 13) + " " + (m - 9) + " V" + (m + 15) + " M" + (x0 - 7) + " " + (m - 9) + " V" + (m + 15)}, "rc g");
+      el(rg, "path", {d:"M" + x0 + " " + (m - 16) + " V" + (m + 15)}, "rc a");
+      el(rg, "ellipse", {cx:x0 - 6, cy:m - 22, rx:5, ry:8.5, transform:"rotate(-35 " + (x0 - 6) + " " + (m - 22) + ")"}, "rc-d");
+      el(rg, "ellipse", {cx:x0 + 6, cy:m - 22, rx:5, ry:8.5, transform:"rotate(35 " + (x0 + 6) + " " + (m - 22) + ")"}, "rc-d");
+      el(rg, "path", {d:"M" + (x0 + 6) + " " + (m + 15) + " V" + (m - 6) + " q4 -7 8 0 V" + (m + 9) + " q4 7 8 0 V" + (m - 6) + " q4 -7 8 0 V" + (m + 15)}, "rc b");
+      var ig = "M" + x0 + " " + (m - 30) + " V" + (m - 52) + " L" + (x0 - 15) + " " + (m - 72) + " M" + x0 + " " + (m - 52) + " L" + (x0 + 15) + " " + (m - 72);
+      el(rg, "path", {d:ig}, "ige");
+      el(rg, "path", {d:ig}, "ige-in");
+      el(rg, "path", {d:"M" + (x0 - 10) + " " + (m - 46) + " L" + (x0 - 19) + " " + (m - 58) + " M" + (x0 + 10) + " " + (m - 46) + " L" + (x0 + 19) + " " + (m - 58)}, "ige-l");
+    });
+    S.ring = el(svg, "circle", {cx:C.x, cy:m - 6, r:10}, "ring");
+    S.ag = el(svg, "g", {}); el(S.ag, "ellipse", {cx:0, cy:0, rx:23, ry:15}, "antigen"); el(S.ag, "ellipse", {cx:-7, cy:-5, rx:7, ry:3.5}, "antigen-hi");
+
+    // names
+    S.agLabel = txt(svg, 316, 26, "Antigen", "lb");
+    txt(svg, 222, 64, "IgE", "lb", {"text-anchor":"end"});
+    txt(svg, 356, 101, "FcεRI", "lb");
+    S.medLabels = [txt(svg, 450, 421, "Histamine", "lb"), txt(svg, 450, 444, "β-Hexosaminidase", "lb mdl")];
+    S.ltLabel = txt(svg, 100, 534, "Leukotrienes", "lb lt-l", {"text-anchor":"middle"});
+    txt(svg, C.x, 528, "Mast cell", "cap", {"text-anchor":"middle"});
+
+    // fennel view: what her study found went down
+    var dg = el(svg, "g", {});
+    S.dn = [
+      {g:down(dg, 296, 158), at:2.9}, {g:down(dg, 362, 203), at:4.1},
+      {g:down(dg, 232, 210), at:7.8}, {g:down(dg, 366, 350), at:7.8}, {g:down(dg, 454, 297), at:8.4},
+      {g:down(dg, 442, 417), at:11.4}, {g:down(dg, 442, 440), at:11.5},
+      {g:down(dg, 285, 330), at:13.3}, {g:down(dg, 232, 409), at:14.3}
+    ];
+    var tag = el(svg, "g", {transform:"translate(14 14)"}, "fse");
+    el(tag, "rect", {x:0, y:0, width:176, height:46}, "fse-box");
+    txt(tag, 10, 17, "TREATED WITH", "fse-k");
+    txt(tag, 10, 36, "Fennel seed extract", "fse-n");
+    var uc = {x:160, y:30};
+    for (var q = 0; q < 5; q++){ var an = -Math.PI/2 + (q/4 - .5) * 1.9, tx = uc.x + Math.cos(an)*12, ty = uc.y + Math.sin(an)*12;
+      el(tag, "path", {d:"M" + uc.x + " " + (uc.y + 10) + " L" + uc.x + " " + uc.y + " L" + tx.toFixed(1) + " " + ty.toFixed(1)}, "fse-st");
+      el(tag, "circle", {cx:tx.toFixed(1), cy:ty.toFixed(1), r:2.2}, "fse-fl"); }
+    return S;
+  }
+
+  // draw the moment t (seconds into the loop)
+  function draw(S, t, fen){
+    var F = fen ? 1 : 0, fade = 1 - seg(t, END, END + .7), N = S.nodes, A = S.arrows;
+    // 1 the antigen arrives and links two IgE
+    var pa = out(seg(t, .2, 1.4));
+    mv(S.ag, C.x, 37 - 80 * (1 - pa) - 70 * (1 - fade));
+    S.ag.style.opacity = (pa * fade).toFixed(3);
+    var pr = seg(t, 1.3, 2.3);
+    S.ring.setAttribute("r", (12 + 70 * pr).toFixed(1));
+    S.ring.style.opacity = pr > 0 && pr < 1 ? (.55 * (1 - pr)).toFixed(3) : 0;
+    // nodes light up as the signal reaches them
+    var lit = {syk:2.5, plc:3.7, pip2:5.0, dag:5.9, ip3:5.9, pkc:7.9, cpla:12.35, aa:12.8, lox:13.1, lta:13.45, ltb:13.95};
+    Object.keys(lit).forEach(function(k){
+      var n = N[k], a = lit[k], h = seg(t, a, a + .35) * fade, b = Math.sin(Math.PI * seg(t, a, a + .5));
+      n.lit.style.opacity = h.toFixed(3);
+      mv(n.g, n.x, n.y, 1 + .14 * b);
+    });
+    // P: the phosphate tag that switches a protein on (smaller and fainter with the extract)
+    [["syk", 2.6], ["plc", 3.8], ["pkc", 8.0]].forEach(function(b){
+      var n = N[b[0]], s = pop(t, b[1]) * fade * (F ? .72 : 1);
+      mv(n.badge, n.bx, n.by, s); n.badge.style.opacity = F ? .6 : 1;
+    });
+    // ink the pathways
+    var ink = {syk:[3.0, 3.7], plc:[4.6, 5.1], dag:[5.3, 5.9], ip3:[5.3, 5.95], er:[6.6, 7.0], caA:[7.0, 7.4], caB:[7.0, 7.4], pkc:[7.3, 7.9],
+      gA1:[9.2, 9.7], gA2:[9.2, 9.7], cpla:[12.0, 12.35], aa:[12.35, 12.8], lta:[12.8, 13.45], ltb:[13.5, 13.95], exit:[14.0, 14.8]};
+    Object.keys(ink).forEach(function(k){
+      var a = A[k], p = ease(seg(t, ink[k][0], ink[k][1])), o = fade * (k === "exit" && F ? .45 : 1);
+      a.ink.style.strokeDashoffset = (a.L * (1 - p)).toFixed(2);
+      a.ink.style.opacity = p > 0 ? o : 0;
+      a.head.style.opacity = (seg(p, .85, 1) * o).toFixed(3);
+    });
+    // the calcium store answers IP3
+    S.er.style.opacity = 1 - .35 * Math.sin(Math.PI * seg(t, 6.95, 7.6));
+    // 4 Ca2+ floods out (less of it with the extract)
+    S.ca.forEach(function(c){
+      var p = out(seg(t, 7.05 + (c.i % 12) * .05, 7.85 + (c.i % 12) * .05)), show = !F || c.i % 5 < 2;
+      var wob = p * fade, x = c.sx + (c.hx - c.sx) * p + Math.sin(t * 2.1 + c.i) * 1.3 * wob, y = c.sy + (c.hy - c.sy) * p + Math.cos(t * 1.7 + c.i * 2) * 1.3 * wob;
+      c.e.setAttribute("cx", x.toFixed(1)); c.e.setAttribute("cy", y.toFixed(1));
+      c.e.style.opacity = show && p > 0 ? (fade * Math.min(1, p * 3)).toFixed(3) : 0;
+    });
+    S.caLabels.forEach(function(l){ l.style.opacity = (.35 + .65 * seg(t, 7.3, 7.8) * fade).toFixed(3); });
+    // 5 the granule moves to the surface, fuses and releases its mediators
+    var pg = ease(seg(t, 9.8, 10.6)) * fade, gx = S.gB.x + (S.gBf.x - S.gB.x) * pg, gy = S.gB.y + (S.gBf.y - S.gB.y) * pg;
+    mv(S.gBel, gx, gy);
+    var open = seg(t, 10.45, 10.95) * fade, th = Math.atan2(.823, .568), gr = S.gB.r;
+    var gap = open * 1.9 * gr, st = (th * gr) - gap / 2;
+    S.gBc.style.strokeDasharray = (S.gBL - gap).toFixed(1) + " " + gap.toFixed(1);
+    S.gBc.style.strokeDashoffset = ((S.gBL - gap) - st).toFixed(1);
+    var mgap = open * 0.26 * R, mst = th * R - mgap / 2;
+    S.mem.style.strokeDasharray = (S.memL - mgap).toFixed(1) + " " + mgap.toFixed(1);
+    S.mem.style.strokeDashoffset = ((S.memL - mgap) - mst).toFixed(1);
+    S.med.forEach(function(d){
+      var go = !F || d.j % 3 === 0, r0 = 10.6 + d.j * .055, q = go ? out(seg(t, r0, r0 + 1.15)) : 0, after = Math.max(0, t - r0 - 1.15);
+      var x = gx + d.ox + (d.tx - gx - d.ox) * q + d.dx * after * q, y = gy + d.oy + (d.ty - gy - d.oy) * q + d.dy * after * q;
+      d.e.setAttribute("cx", x.toFixed(1)); d.e.setAttribute("cy", y.toFixed(1));
+      d.e.style.opacity = q > 0 ? fade.toFixed(3) : 1;
+    });
+    var ml = seg(t, 10.9, 11.4) * fade;
+    S.medLabels.forEach(function(l){ l.style.opacity = ml.toFixed(3); });
+    // 6 leukotrienes are made and leave the cell
+    S.lt.forEach(function(e, k){
+      var s0 = 14.35 + k * .45, on = t >= s0 && t < END + .6 && (!F || k === 0);
+      if (!on){ e.style.opacity = 0; return; }
+      var ph = ((t - s0) % 1.35) / 1.35, pt = A.exit.ink.getPointAtLength(ph * A.exit.L);
+      e.setAttribute("cx", pt.x.toFixed(1)); e.setAttribute("cy", pt.y.toFixed(1));
+      e.style.opacity = (Math.sin(Math.PI * ph) * fade * (F ? .7 : 1)).toFixed(3);
+    });
+    S.ltLabel.style.opacity = (seg(t, 14.4, 14.9) * fade * (F ? .55 : 1)).toFixed(3);
+    // with the extract: the red arrows from her summary slide
+    S.dn.forEach(function(d){ mv(d.g, d.g._x, d.g._y, pop(t, d.at) * fade * F); });
+  }
+
+  function mount(root, data, E){
+    var md = E.md, has = E.has, L = E.list;
+    var steps = L(data && data.steps), fen = (data && data.fennel) || {};
+    root.hidden = !steps.length;
+    if (!steps.length) return;
+    var svg = root.querySelector("svg"), list = root.querySelector(".steps"), play = root.querySelector(".play"), seg2 = root.querySelectorAll(".seg button");
+    E.fill("#studyTitle", md(data.title)); E.fill("#studyIntro", has(data.intro) ? md(data.intro) : "");
+    root.querySelector("#studyIntro").hidden = !has(data.intro);
+    E.fill("#studyCredit", has(data.credit) ? md(data.credit) : "");
+    root.querySelector("#studyCredit").hidden = !has(data.credit);
+    seg2[0].innerHTML = md(data.label || "Allergic reaction");
+    seg2[1].innerHTML = md(fen.label || "With fennel seed extract");
+    seg2[1].parentNode.hidden = !L(fen.steps).length;
+    svg.setAttribute("aria-label", String(data.title || "Diagram") + ". An animated diagram; each step is described in the list next to it.");
+
+    var S = build(svg), reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var t = reduce ? END : 0, playing = !reduce, visible = false, raf = 0, last = 0, fennel = false, cur = -1;
+
+    function fill(){
+      var src = fennel && L(fen.steps).length ? fen.steps : steps;
+      list.innerHTML = src.slice(0, 7).map(function(s, i){
+        return '<li><button type="button" data-i="' + i + '"><span class="n">' + (i < 9 ? "0" : "") + (i + 1) + '</span><span><b>' + md(s.title) + '</b>' +
+          (has(s.text) ? '<span class="tx">' + md(s.text) + '</span>' : '') + '</span></button></li>';
+      }).join("");
+      cur = -1;
+    }
+    function mark(){
+      var i = 0; while (i < 6 && t >= T[i + 1]) i++;
+      if (i === cur) return; cur = i;
+      Array.prototype.forEach.call(list.querySelectorAll("button"), function(b, k){ if (k === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+    }
+    function show(){ draw(S, t, fennel); mark(); }
+    function frame(now){
+      raf = 0;
+      if (!playing || !visible) return;
+      t = (t + Math.min(.1, (now - last) / 1000)) % LOOP; last = now;
+      show();
+      raf = requestAnimationFrame(frame);
+    }
+    function go(){ if (!raf && playing && visible){ last = performance.now(); raf = requestAnimationFrame(frame); } }
+    function label(){
+      play.setAttribute("aria-pressed", playing ? "false" : "true");
+      play.querySelector(".pl-t").textContent = playing ? "Pause" : "Play";
+      play.classList.toggle("is-paused", !playing);
+    }
+    play.addEventListener("click", function(){ playing = !playing; label(); if (playing && t >= END) t = 0; go(); });
+    list.addEventListener("click", function(e){
+      var b = e.target.closest("button"); if (!b) return;
+      var i = +b.getAttribute("data-i");
+      t = playing ? T[i] + .001 : Math.min(T[i + 1] - .05, END);
+      show();
+    });
+    Array.prototype.forEach.call(seg2, function(b, k){
+      b.addEventListener("click", function(){
+        if (fennel === (k === 1)) return;
+        fennel = k === 1;
+        seg2[0].setAttribute("aria-pressed", String(!fennel)); seg2[1].setAttribute("aria-pressed", String(fennel));
+        svg.classList.toggle("fen", fennel);
+        fill();
+        if (playing) t = 0;
+        show();
+      });
+    });
+    if ("IntersectionObserver" in window){
+      new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if (visible) go(); }, {rootMargin:"60px"}).observe(svg);
+    } else { visible = true; }
+    fill(); label(); show(); go();
+  }
+  return { mount: mount };
 })();
 
 /* ---------- page ---------- */
@@ -911,10 +1524,11 @@ function render(S, E){
   // research
   var sheets = L(S.research);
   E.fill("#sheets", sheets.map(function(r,i){
-    return '<article class="sheet"><svg class="draw" viewBox="0 0 300 160" aria-hidden="true" data-k="'+(i%3)+'"></svg><h3>'+md(r.title)+'</h3><p>'+md(r.text)+'</p>' +
+    return '<article class="sheet"><svg class="draw" viewBox="0 0 300 160" width="300" height="160" aria-hidden="true" data-k="'+Bot.plateFor(r, i)+'"></svg><h3>'+md(r.title)+'</h3><p>'+md(r.text)+'</p>' +
       (has(r.tag) ? '<div class="tag"><dl><dt>Collected</dt><dd>'+md(r.tag)+'</dd></dl></div>' : '') + '</article>';
   }).join(""), "section");
-  E.$$("#sheets svg").forEach(function(s){ Bot.sprig(s, +s.getAttribute("data-k")); });
+  E.$$("#sheets svg").forEach(function(s){ Bot.plate(s, s.getAttribute("data-k")); });
+  Study.mount(document.getElementById("study"), ("study" in S) ? S.study : (window.SITE_BACKUP || {}).study, E);
 
   // publications
   var pubs = L(S.publications);
